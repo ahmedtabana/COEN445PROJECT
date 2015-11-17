@@ -12,8 +12,6 @@ public class Client {
 
     Client (){
     }
-// new comment added here does it show up
-//dsfsfsafaf
 
     public void connect(){
 

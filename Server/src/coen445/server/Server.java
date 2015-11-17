@@ -19,45 +19,19 @@ public class Server{
         System.out.println("Please Configure Server");
         System.out.println("Enter the server port number");
 
-        BufferedReader inFromUser =
-                new BufferedReader(new InputStreamReader(System.in));
-
         int serverPort = 0;
-        serverPort = getServerPortFromUser(serverPort);
+        serverPort = getServerPortFromUser();
 
         InetAddress serverIPAddress = null;
-        serverIPAddress = getServerInetAddress(serverIPAddress);
+        serverIPAddress = getServerInetAddress();
 
         // should make this thread safe, not more than one object should use this at one time
         createServerSocket(serverPort, serverIPAddress);
-
-
     }
 
-    private void createServerSocket(int serverPort, InetAddress serverIPAddress) {
-        try {
-            serverSocket = new DatagramSocket(serverPort,serverIPAddress);
-            System.out.println("Server setup was successful");
-
-
-        } catch (SocketException e) {
-            System.out.println("Could not create server socket");
-            e.printStackTrace();
-        }
-    }
-
-    private InetAddress getServerInetAddress(InetAddress serverIPAddress) {
-        try {
-            serverIPAddress = InetAddress.getByName("localhost");
-        } catch (UnknownHostException e) {
-            System.out.println("Server IP address is not known");
-            e.printStackTrace();
-        }
-        return serverIPAddress;
-    }
-
-    private int getServerPortFromUser(int serverPort) {
+    private int getServerPortFromUser() {
         String userInput;
+        int serverPort = 0;
         while (serverPort == 0 || serverPort < 1024) {
 
             System.out.println("Please enter a number greater than 1024");
@@ -79,6 +53,29 @@ public class Server{
         return serverPort;
     }
 
+    private InetAddress getServerInetAddress() {
+        InetAddress serverIPAddress = null;
+
+        try {
+            serverIPAddress = InetAddress.getByName("localhost");
+        } catch (UnknownHostException e) {
+            System.out.println("Server IP address is not known");
+            e.printStackTrace();
+        }
+        return serverIPAddress;
+    }
+
+    private void createServerSocket(int serverPort, InetAddress serverIPAddress) {
+        try {
+            serverSocket = new DatagramSocket(serverPort,serverIPAddress);
+            System.out.println("Server setup was successful");
+
+
+        } catch (SocketException e) {
+            System.out.println("Could not create server socket");
+            e.printStackTrace();
+        }
+    }
 
 
     private void displayServerInfo() {
@@ -175,4 +172,3 @@ public class Server{
     }
 
 }
-//hello, this is so much bullshit
