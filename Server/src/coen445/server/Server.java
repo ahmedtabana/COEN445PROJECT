@@ -5,10 +5,15 @@ package coen445.server; /**
 import java.io.*;
 import java.net.*;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.SynchronousQueue;
+
 public class Server{
 
     public static final int BUFFER_SIZE = 1024;
     private static DatagramSocket serverSocket;
+    private CopyOnWriteArrayList<InetAddress> listOfParticipants;
+
 
     public Server() {
 
@@ -19,14 +24,16 @@ public class Server{
         System.out.println("Please Configure Server");
         System.out.println("Enter the server port number");
 
-        int serverPort = 0;
+        int serverPort;
         serverPort = getServerPortFromUser();
 
-        InetAddress serverIPAddress = null;
+        InetAddress serverIPAddress;
         serverIPAddress = getServerInetAddress();
 
         // should make this thread safe, not more than one object should use this at one time
         createServerSocket(serverPort, serverIPAddress);
+        listOfParticipants = new CopyOnWriteArrayList<InetAddress>();
+
     }
 
     private int getServerPortFromUser() {
@@ -70,7 +77,6 @@ public class Server{
             serverSocket = new DatagramSocket(serverPort,serverIPAddress);
             System.out.println("Server setup was successful");
 
-
         } catch (SocketException e) {
             System.out.println("Could not create server socket");
             e.printStackTrace();
@@ -107,20 +113,14 @@ public class Server{
 
             InetAddress IPAddress = receivePacket.getAddress();
             System.out.println("RECEIVED Address: " + IPAddress);
-
+            addToListOfParticipants(IPAddress);
             int port = receivePacket.getPort();
             System.out.println("RECEIVED Port: " + port);
 
-            UDPMessage message = null;
-            message = getUdpMessage(receiveData, message);
+            UDPMessage message;
+            message = getUdpMessage(receiveData);
 
-            UDPMessage replyMessage =  processTheMessage(message);
-            try {
-                sendData = getBytes(replyMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ResponseThread myResponseThread = new ResponseThread(sendData,IPAddress,port, serverSocket);
+            ResponseThread myResponseThread = new ResponseThread(message,IPAddress,port, serverSocket);
 
             Thread t = new Thread(myResponseThread);
             t.start();
@@ -130,16 +130,14 @@ public class Server{
 
     }
 
-    private byte[] getBytes(UDPMessage message) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ObjectOutputStream os = new ObjectOutputStream(outputStream);
-        os.writeObject(message);
-        System.out.println("From Server, creating message object:");
-        System.out.println(message.toString());
-        return outputStream.toByteArray();
+    private void addToListOfParticipants(InetAddress ipAddress) {
+
+        if(!listOfParticipants.contains(ipAddress))
+        listOfParticipants.add(ipAddress);
     }
 
-    private UDPMessage getUdpMessage(byte[] receiveData, UDPMessage message) {
+    private UDPMessage getUdpMessage(byte[] receiveData) {
+        UDPMessage message = null;
         ByteArrayInputStream in = new ByteArrayInputStream(receiveData);
         try {
 
@@ -156,10 +154,17 @@ public class Server{
         return message;
     }
 
-    private UDPMessage processTheMessage(UDPMessage message) {
-        message.setType("Response");
-        return message;
+    public static byte[] getBytes(UDPMessage message) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ObjectOutputStream os = new ObjectOutputStream(outputStream);
+        os.writeObject(message);
+        System.out.println("From Server, creating message object:");
+        System.out.println(message.toString());
+        return outputStream.toByteArray();
     }
+
+
+
 
     public static void main(String[] args) throws Exception {
 

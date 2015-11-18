@@ -13,28 +13,41 @@ public class ResponseThread implements Runnable {
     byte[] sendData;
     InetAddress IPAddress;
     int port;
-
+    UDPMessage message;
     DatagramSocket socket;
 
 
-    ResponseThread(byte[] sendData, InetAddress IPAddress, int port, DatagramSocket socket){
+    ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
 
-        this.sendData = sendData;
+        sendData = new byte[Server.BUFFER_SIZE];
         this.IPAddress = IPAddress;
         this.port = port;
         this.socket = socket;
+        this.message = message;
+
     }
+
     @Override
     public void run() {
 
+        processTheMessage(message);
+        try {
+            sendData = Server.getBytes(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
         try {
             socket.send(sendPacket);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
+    private UDPMessage processTheMessage(UDPMessage message) {
+        message.setType("Response");
+        return message;
+    }
+
 }
 
