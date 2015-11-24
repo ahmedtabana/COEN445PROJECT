@@ -1,12 +1,11 @@
-package coen445.server; /**
+package coen445.server;
+/**
  * Created by Ahmed on 15-10-25.
  */
 
 import java.io.*;
 import java.net.*;
-
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.SynchronousQueue;
 
 public class Server{
 
@@ -48,7 +47,7 @@ public class Server{
                 userInput = bufferedReader.readLine();
                 serverPort = Integer.parseInt(userInput);
             } catch (NumberFormatException ex) {
-                System.out.println("Thi is not a number");
+                System.out.println("This is not a number");
             } catch (IOException e) {
 
 
@@ -64,7 +63,8 @@ public class Server{
         InetAddress serverIPAddress = null;
 
         try {
-            serverIPAddress = InetAddress.getByName("localhost");
+            serverIPAddress = InetAddress.getLocalHost();
+            System.out.println("InetAddress = " + serverIPAddress);
         } catch (UnknownHostException e) {
             System.out.println("Server IP address is not known");
             e.printStackTrace();
@@ -88,6 +88,7 @@ public class Server{
 
         System.out.println("Server Port is set to: " + serverSocket.getLocalPort());
         System.out.println("Server Ip is set to: " + serverSocket.getLocalAddress());
+        System.out.println("");
     }
 
 
@@ -96,8 +97,6 @@ public class Server{
 
         byte[] receiveData = new byte[BUFFER_SIZE];
         DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
-
-        byte[] sendData = new byte[BUFFER_SIZE];
 
 
         while(true){
@@ -125,9 +124,7 @@ public class Server{
             Thread t = new Thread(myResponseThread);
             t.start();
 
-
         }
-
     }
 
     private void addToListOfParticipants(InetAddress ipAddress) {
@@ -162,9 +159,6 @@ public class Server{
         System.out.println(message.toString());
         return outputStream.toByteArray();
     }
-
-
-
 
     public static void main(String[] args) throws Exception {
 

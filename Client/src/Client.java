@@ -29,12 +29,13 @@ public class Client {
 
              int serverPort = getServerPort(inFromUser);
 
-            InetAddress IPAddress = InetAddress.getByName("localhost");
+            String serverAddress = getServerAddress(inFromUser);
+            InetAddress IPAddress = InetAddress.getByName(serverAddress);
             byte[] sendData = new byte[1024];
 
 
             System.out.println("Enter Message type:");
-            String type = inFromUser.readLine();
+            String type = getMessageType(inFromUser);
 
 
             UDPMessage message = new UDPMessage(type, 100);
@@ -59,6 +60,7 @@ public class Client {
 
                 socket.disconnect();
 
+
             }
 
 
@@ -69,7 +71,34 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        finally {
+            socket.close();
+        }
 
+    }
+
+    private String getMessageType(BufferedReader inFromUser) {
+        String messageType = null;
+
+        try {
+            messageType= inFromUser.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return messageType;
+    }
+
+    private String getServerAddress(BufferedReader inFromUser) {
+        String serverAddress = null;
+
+        System.out.println("Please enter the IP address for the server");
+
+        try {
+            serverAddress= inFromUser.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return serverAddress;
     }
 
     private UDPMessage getUdpMessage(byte[] receiveData, UDPMessage message) {
