@@ -88,20 +88,8 @@ public class Client {
         UDPMessage message = null;
         String type = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while (message == null) {
 
-
-            System.out.println("Please enter message type");
-
-            try {
-                type = br.readLine();
-                message = factory.createMessage(type);
-
-            } catch (IOException e) {
-                System.out.println("This is not a correct message type");
-            }
-        }
-
+        message = factory.createMessage(br);
         message.displayRequestMessage();
         return message;
     }
