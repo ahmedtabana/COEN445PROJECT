@@ -1,6 +1,10 @@
+package coen445.client;
+
 /**
  * Created by Ahmed on 15-10-25.
  */
+
+import coen445.server.MessageFactory;
 import coen445.server.UDPMessage;
 
 import java.io.*;
@@ -9,6 +13,7 @@ import java.net.*;
 public class Client {
 
     DatagramSocket socket;
+    MessageFactory factory = new MessageFactory();
 
     Client (){
     }
@@ -33,12 +38,12 @@ public class Client {
             InetAddress IPAddress = InetAddress.getByName(serverAddress);
             byte[] sendData = new byte[1024];
 
+            UDPMessage message = null;
 
-            System.out.println("Enter Message type:");
-            String type = getMessageType(inFromUser);
+            message = getMessage();
 
 
-            UDPMessage message = new UDPMessage(type, 100);
+
             sendData = getBytes(message);
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, serverPort);
 
@@ -53,6 +58,8 @@ public class Client {
                 UDPMessage fromServerMessage = getUdpMessage(receiveData, message);
 
                 System.out.println("Enter Message type:");
+                System.out.println("Format: coen445.server.MessageClassName");
+
                 String type2 = inFromUser.readLine();
                 message.setType(type2);
                 sendData = getBytes(message);
@@ -75,6 +82,28 @@ public class Client {
             socket.close();
         }
 
+    }
+
+    private UDPMessage getMessage() {
+        UDPMessage message = null;
+        String type = null;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (message == null) {
+
+
+            System.out.println("Please enter message type");
+
+            try {
+                type = br.readLine();
+                message = factory.createMessage(type);
+
+            } catch (IOException e) {
+                System.out.println("This is not a correct message type");
+            }
+        }
+
+        message.displayRequestMessage();
+        return message;
     }
 
     private String getMessageType(BufferedReader inFromUser) {
@@ -126,7 +155,6 @@ public class Client {
         System.out.println(message.toString());
         return outputStream.toByteArray();
     }
-
 
 
     private int getServerPort(BufferedReader inFromUser) throws IOException {

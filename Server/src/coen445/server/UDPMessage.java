@@ -5,24 +5,10 @@ import java.io.Serializable;
 /**
  * Created by Ahmed on 15-11-10.
  */
-public class UDPMessage implements Serializable {
+public abstract class UDPMessage implements Serializable {
 
     private String type;
-    private int number;
     private static final long serialVersionUID = 1L;
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-   public UDPMessage (String type, int number){
-        this.type = type;
-        this.number = number;
-    }
 
     public String getType() {
         return type;
@@ -32,9 +18,17 @@ public class UDPMessage implements Serializable {
         this.type = type;
     }
 
+    public int getRequestNumber() {return -1;}
+
+    public void displayType() {
+        System.out.println("Type =" + getType());
+    }
+
+    public void displayRequestMessage() {}
+
     public String toString(){
         String result;
-        result = "Type= " + getType() + " , " + " Number = " + getNumber();
+        result = "Type= " + getType();
         return result;
     }
 }
