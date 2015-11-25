@@ -15,7 +15,7 @@ public class ResponseThread implements Runnable {
     int port;
     UDPMessage message;
     DatagramSocket socket;
-
+    Responder responder;
 
     ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
 
@@ -24,12 +24,13 @@ public class ResponseThread implements Runnable {
         this.port = port;
         this.socket = socket;
         this.message = message;
-
+        responder = ResponderFactory.createResponder(message.getType());
     }
 
     @Override
     public void run() {
 
+        responder.respond();
         processTheMessage(message);
         try {
             sendData = Server.getBytes(message);

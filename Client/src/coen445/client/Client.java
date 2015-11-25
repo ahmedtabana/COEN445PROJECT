@@ -5,6 +5,8 @@ package coen445.client;
  */
 
 import coen445.server.MessageFactory;
+import coen445.server.RegisterMessage;
+import coen445.server.RequestMessage;
 import coen445.server.UDPMessage;
 
 import java.io.*;
@@ -36,17 +38,19 @@ public class Client {
 
             String serverAddress = getServerAddress(inFromUser);
             InetAddress IPAddress = InetAddress.getByName(serverAddress);
+
             byte[] sendData = new byte[1024];
-
-            UDPMessage message = null;
-
-            message = getMessage();
-
-
-
-            sendData = getBytes(message);
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, serverPort);
 
+            SendRegisterMessage(serverPort, IPAddress, sendPacket);
+
+
+
+
+            UDPMessage message = null;
+            message = getMessage();
+            sendData = getBytes(message);
+            sendPacket.setData(sendData);
 
             while(true) {
 
@@ -55,6 +59,8 @@ public class Client {
 
                 socket.send(sendPacket);
                 socket.receive(receivePacket);
+
+                
                 UDPMessage fromServerMessage = getUdpMessage(receiveData, message);
 
                 System.out.println("Enter Message type:");
@@ -84,11 +90,27 @@ public class Client {
 
     }
 
+    private void SendRegisterMessage(int serverPort, InetAddress IPAddress, DatagramPacket sendPacket) throws IOException {
+        byte[] sendData;
+        UDPMessage registerMessage = null;
+        try {
+            registerMessage = (UDPMessage) Class.forName("coen445.server.RegisterMessage").newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        sendData = getBytes(registerMessage);
+        sendPacket.setData(sendData);
+        socket.connect(IPAddress, serverPort);
+        socket.send(sendPacket);
+    }
+
     private UDPMessage getMessage() {
         UDPMessage message = null;
-        String type = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         message = factory.createMessage(br);
         message.displayRequestMessage();
         return message;

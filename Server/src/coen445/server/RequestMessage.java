@@ -1,11 +1,11 @@
 package coen445.server;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+
 
 /**
  * Created by Ahmed on 15-11-16.
@@ -26,7 +26,10 @@ public class RequestMessage extends UDPMessage{
 
     public RequestMessage() {
 
-        setType("REQUEST");
+
+        requestParticipantList();
+
+        setType("Request");
         counter++;
         setRequestNumber(counter);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -59,6 +62,40 @@ public class RequestMessage extends UDPMessage{
         System.out.println("Request Message Created");
 
 
+    }
+
+    private void requestParticipantList() {
+
+        byte[] sendData;
+        byte[] recieveData;
+
+        UDPMessage requestParticipantListMessage = null;
+
+        requestParticipantListMessage = (UDPMessage) new  RequestParticipantListMessage();
+
+
+        try {
+            sendData = getBytes(requestParticipantListMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DatagramPacket sendPacket;
+//        sendPacket.setData(sendData);
+//        socket.connect(IPAddress, serverPort);
+//        socket.send(sendPacket);
+//        socket.recieve();
+//
+
+    }
+
+    private byte[] getBytes(UDPMessage message) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ObjectOutputStream os = new ObjectOutputStream(outputStream);
+        os.writeObject(message);
+        System.out.println("From Client, creating message object:");
+        System.out.println(message.toString());
+        return outputStream.toByteArray();
     }
 
     public int getMinimumNumberOfParticipants() {

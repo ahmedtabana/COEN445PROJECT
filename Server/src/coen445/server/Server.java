@@ -3,15 +3,18 @@ package coen445.server;
  * Created by Ahmed on 15-10-25.
  */
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.*;
 import java.net.*;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server{
 
     public static final int BUFFER_SIZE = 1024;
     private static DatagramSocket serverSocket;
-    private CopyOnWriteArrayList<InetAddress> listOfParticipants;
+    private ConcurrentHashMap<InetAddress,ParticipantData> IpToData;
 
 
     public Server() {
@@ -31,7 +34,7 @@ public class Server{
 
         // should make this thread safe, not more than one object should use this at one time
         createServerSocket(serverPort, serverIPAddress);
-        listOfParticipants = new CopyOnWriteArrayList<InetAddress>();
+        IpToData = new ConcurrentHashMap<InetAddress,ParticipantData>();
 
     }
 
@@ -112,10 +115,10 @@ public class Server{
 
             InetAddress IPAddress = receivePacket.getAddress();
             System.out.println("RECEIVED Address: " + IPAddress);
-            addToListOfParticipants(IPAddress);
             int port = receivePacket.getPort();
             System.out.println("RECEIVED Port: " + port);
-
+            addIpToData(IPAddress,port);
+            displayListOfParticipants();
             UDPMessage message;
             message = getUdpMessage(receiveData);
 
@@ -127,10 +130,28 @@ public class Server{
         }
     }
 
-    private void addToListOfParticipants(InetAddress ipAddress) {
+    private void addIpToData(InetAddress ipAddress, int port) {
 
-        if(!listOfParticipants.contains(ipAddress))
-        listOfParticipants.add(ipAddress);
+        ParticipantData data = new ParticipantData(ipAddress,port);
+
+
+            IpToData.put(ipAddress, data);
+
+
+    }
+
+    private void displayListOfParticipants(){
+
+        Set<InetAddress> mySet = IpToData.keySet();
+
+        for(InetAddress i : mySet){
+
+            ParticipantData data = IpToData.get(i);
+
+            System.out.println("IPAddress: " + data.getIPAddress());
+            System.out.println("Port: " + data.getPort());
+        }
+
     }
 
     private UDPMessage getUdpMessage(byte[] receiveData) {
