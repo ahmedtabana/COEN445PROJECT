@@ -24,12 +24,13 @@ public abstract class UDPMessage implements Serializable {
         System.out.println("Type =" + getType());
     }
 
-    public void displayRequestMessage() {}
+    public void displayMessage() {}
 
     public String toString(){
         String result;
         result = getType();
         return result;
     }
+
 }
 

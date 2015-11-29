@@ -18,8 +18,8 @@ public class RequestMessage extends UDPMessage{
 
 
     private int requestNumber;
-    // private DateTime meetingDateTime;
     private int minimumNumberOfParticipants;
+    private DateTime dateTime;
     private ArrayList<InetAddress> listOfParticipants;
     private String topic;
 
@@ -27,11 +27,16 @@ public class RequestMessage extends UDPMessage{
     public RequestMessage() {
 
 
-        requestParticipantList();
+//        requestParticipantList();
 
         setType("Request");
         counter++;
         setRequestNumber(counter);
+        dateTime = new DateTime();
+        dateTime.setDay(1);
+        dateTime.setMonth(10);
+        dateTime.setYear(2016);
+        dateTime.setTime(10);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         boolean isReady = false;
@@ -84,7 +89,7 @@ public class RequestMessage extends UDPMessage{
 //        sendPacket.setData(sendData);
 //        socket.connect(IPAddress, serverPort);
 //        socket.send(sendPacket);
-//        socket.recieve();
+//        socket.receive();
 //
 
     }
@@ -132,11 +137,13 @@ public class RequestMessage extends UDPMessage{
         this.listOfParticipants = listOfParticipants;
     }
 
-    public void displayRequestMessage(){
+    public void displayMessage(){
         System.out.println("Message type: " + getType());
         System.out.println("Request Number: " + getRequestNumber());
-        System.out.println("Date: ");
-        System.out.println("Time: ");
+        System.out.println("Day: " + dateTime.getDay());
+        System.out.println("Month: " + dateTime.getMonth());
+        System.out.println("Year: " + dateTime.getYear());
+        System.out.println("Time: " + dateTime.getTime());
 
         System.out.println("Minimum number of participants: " + getMinimumNumberOfParticipants());
         System.out.println("Topic: " + getTopic());
@@ -144,6 +151,19 @@ public class RequestMessage extends UDPMessage{
 
     }
 
+    public int getDay(){
+        return dateTime.getDay();
+    }
+    public int getMonth(){
+        return dateTime.getMonth();
+    }
+    public int getYear(){
+        return dateTime.getYear();
+    }
+
+    public int getTime(){
+        return dateTime.getTime();
+    }
 
 
 }

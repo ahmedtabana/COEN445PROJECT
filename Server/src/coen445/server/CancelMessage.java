@@ -5,8 +5,9 @@ package coen445.server;
  */
 public class CancelMessage extends UDPMessage {
 
+
     CancelMessage(){
 
-        setType("CANCEL");
+        setType("Cancel");
     }
 }

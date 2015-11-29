@@ -11,5 +11,4 @@ public class RegisterMessage extends UDPMessage {
         System.out.println("Register message created");
     }
 
-
 }

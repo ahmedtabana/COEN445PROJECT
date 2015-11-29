@@ -5,8 +5,6 @@ package coen445.client;
  */
 
 import coen445.server.MessageFactory;
-import coen445.server.RegisterMessage;
-import coen445.server.RequestMessage;
 import coen445.server.UDPMessage;
 
 import java.io.*;
@@ -114,7 +112,7 @@ public class Client {
         UDPMessage message = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         message = factory.createMessage(br);
-        message.displayRequestMessage();
+        message.displayMessage();
         return message;
     }
 

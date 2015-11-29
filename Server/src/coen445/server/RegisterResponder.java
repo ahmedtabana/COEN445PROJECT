@@ -2,7 +2,6 @@ package coen445.server;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Set;
 
@@ -48,7 +47,7 @@ public class RegisterResponder extends BaseResponder {
         ParticipantData data = new ParticipantData(ipAddress,port);
 
 
-        Server.IpToData.put(ipAddress, data);
+        Server.ipToData.put(ipAddress, data);
 
         System.out.println("Adding client to list is Successful");
 
@@ -58,11 +57,11 @@ public class RegisterResponder extends BaseResponder {
 
         System.out.println("Displaying the list of registered users:");
         System.out.println("");
-        Set<InetAddress> mySet = Server.IpToData.keySet();
+        Set<InetAddress> mySet = Server.ipToData.keySet();
 
         for(InetAddress i : mySet){
 
-            ParticipantData data = Server.IpToData.get(i);
+            ParticipantData data = Server.ipToData.get(i);
 
             System.out.println("IPAddress: " + data.getIPAddress());
             System.out.println("Port: " + data.getPort());

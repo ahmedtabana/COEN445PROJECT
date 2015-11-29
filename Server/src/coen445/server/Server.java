@@ -5,7 +5,6 @@ package coen445.server;
 
 import java.io.*;
 import java.net.*;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,8 +12,8 @@ public class Server{
 
     public static final int BUFFER_SIZE = 1024;
     private static DatagramSocket serverSocket;
-    public static ConcurrentHashMap<InetAddress,ParticipantData> IpToData;
-
+    public static ConcurrentHashMap<InetAddress,ParticipantData> ipToData;
+    public static CopyOnWriteArrayList<DateTime> roomReservationList;
 
     public Server() {
 
@@ -33,9 +32,12 @@ public class Server{
 
         // should make this thread safe, not more than one object should use this at one time
         createServerSocket(serverPort, serverIPAddress);
-        IpToData = new ConcurrentHashMap<InetAddress,ParticipantData>();
+        ipToData = new ConcurrentHashMap<InetAddress,ParticipantData>();
+
+        setupRoomAvailability();
 
     }
+
 
     private int getServerPortFromUser() {
         String userInput;
@@ -85,6 +87,20 @@ public class Server{
         }
     }
 
+    private void setupRoomAvailability() {
+
+        roomReservationList = new CopyOnWriteArrayList<DateTime>();
+
+        DateTime firstSlot = new DateTime();
+        firstSlot.setDay(1);
+        firstSlot.setMonth(10);
+        firstSlot.setYear(2016);
+        firstSlot.setTime(10);
+
+        roomReservationList.add(firstSlot);
+
+
+    }
 
     private void displayServerInfo() {
 
