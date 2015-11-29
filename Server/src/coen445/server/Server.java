@@ -98,8 +98,6 @@ public class Server{
         firstSlot.setTime(10);
 
         roomReservationList.add(firstSlot);
-
-
     }
 
     private void displayServerInfo() {

@@ -34,8 +34,9 @@ public class Client {
 
              int serverPort = getServerPort(inFromUser);
 
-            String serverAddress = getServerAddress(inFromUser);
-            InetAddress IPAddress = InetAddress.getByName(serverAddress);
+//            String serverAddress = getServerAddress(inFromUser);
+//            InetAddress IPAddress = InetAddress.getByName(serverAddress);
+            InetAddress IPAddress = getServerAddress(inFromUser);
 
             byte[] sendData = new byte[1024];
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, serverPort);
@@ -63,12 +64,14 @@ public class Client {
                 
                 UDPMessage fromServerMessage = getUdpMessage(receiveData);
 
-                System.out.println("Enter Message type:");
-                System.out.println("Format: coen445.server.MessageClassName");
-
-                String type2 = inFromUser.readLine();
-                message.setType(type2);
-                sendData = getBytes(message);
+//                System.out.println("Enter Message type:");
+//                System.out.println("Format: coen445.server.MessageClassName");
+//
+//                String type2 = inFromUser.readLine();
+//                message.setType(type2);
+                UDPMessage newMessage = null;
+                newMessage = getMessage();
+                sendData = getBytes(newMessage);
                 sendPacket.setData(sendData);
 
                 socket.disconnect();
@@ -127,15 +130,23 @@ public class Client {
         return messageType;
     }
 
-    private String getServerAddress(BufferedReader inFromUser) {
-        String serverAddress = null;
+    private InetAddress getServerAddress(BufferedReader inFromUser) {
+        InetAddress serverAddress = null;
 
-        System.out.println("Please enter the IP address for the server");
+        boolean isReady = false;
+        while(!isReady) {
 
-        try {
-            serverAddress= inFromUser.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Please enter the IP address for the server");
+
+            try {
+                serverAddress = InetAddress.getByName(inFromUser.readLine());
+                System.out.println("You entered InetAddress = " + serverAddress);
+
+                isReady = true;
+            } catch (IOException e) {
+                System.out.println("Not Valid IP address");
+                isReady = false;
+            }
         }
         return serverAddress;
     }
@@ -149,6 +160,7 @@ public class Client {
             message = (UDPMessage) is.readObject();
 
             System.out.println("Client received message: "+ message);
+            message.displayMessage();
 
         } catch (IOException e) {
             e.printStackTrace();

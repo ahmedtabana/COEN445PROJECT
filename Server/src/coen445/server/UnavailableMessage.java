@@ -7,7 +7,7 @@ public class UnavailableMessage extends UDPMessage {
 
 
     private int requestNumber;
-    private String unAvailable = "Room is unavailable";
+    private String unAvailable = " , Room is unavailable";
 
 
     UnavailableMessage(int requestNumber){
@@ -25,6 +25,9 @@ public class UnavailableMessage extends UDPMessage {
         this.requestNumber = requestNumber;
     }
 
-
-
+    @Override
+    public void displayMessage() {
+        super.displayMessage();
+        System.out.println("For Request#: " + requestNumber + unAvailable);
+    }
 }

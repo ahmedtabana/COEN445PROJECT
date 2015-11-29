@@ -1,6 +1,7 @@
 package coen445.server;
 
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -15,59 +16,135 @@ public class RequestMessage extends UDPMessage{
 
     private static int counter = 0;
 
-
-
     private int requestNumber;
-    private int minimumNumberOfParticipants;
     private DateTime dateTime;
     private ArrayList<InetAddress> listOfParticipants;
+    private int minimumNumberOfParticipants;
     private String topic;
 
 
     public RequestMessage() {
-
 
 //        requestParticipantList();
 
         setType("Request");
         counter++;
         setRequestNumber(counter);
+
         dateTime = new DateTime();
-        dateTime.setDay(1);
-        dateTime.setMonth(10);
-        dateTime.setYear(2016);
-        dateTime.setTime(10);
+        listOfParticipants = new ArrayList<InetAddress>();
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        boolean isReady = false;
-        while(!isReady) {
-            try {
-                System.out.println("Please enter the message topic");
-                setTopic(br.readLine());
-                isReady = true;
+        while(!dateTimeReady(br));
+        while(!listOfParticipantsReady());
+        while(!minimumNumOfParticipantsReady(br));
+        while(!topicReady(br));
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                System.out.println("Please enter the minimum number of participants");
-                setMinimumNumberOfParticipants(Integer.parseInt(br.readLine()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Not an Integer");
-                isReady = false;
-            }
-
-
-        }
         System.out.println("Request Message Created");
 
-
     }
+
+    private boolean listOfParticipantsReady() {
+        //todo
+        return true;
+    }
+
+    private boolean minimumNumOfParticipantsReady(BufferedReader br) {
+        try {
+            System.out.println("Please enter the minimum number of participants");
+            setMinimumNumberOfParticipants(Integer.parseInt(br.readLine()));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Not an Integer");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean topicReady(BufferedReader br) {
+        try {
+            System.out.println("Please enter the message topic");
+            setTopic(br.readLine());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean dateTimeReady(BufferedReader br) {
+        try {
+
+            System.out.println("Please enter the day");
+            dateTime.setDay(Integer.parseInt(br.readLine()));
+            System.out.println("Please enter the month");
+            dateTime.setMonth(Integer.parseInt(br.readLine()));
+            System.out.println("Please enter the year");
+            dateTime.setYear(Integer.parseInt(br.readLine()));
+            System.out.println("Please enter the time");
+            dateTime.setTime(Integer.parseInt(br.readLine()));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (NumberFormatException e) {
+            System.out.println("Not an Integer");
+            return false;
+        }
+        return true;
+    }
+
+    public int getRequestNumber() {
+        return requestNumber;
+    }
+
+    public void setRequestNumber(int requestNumber) {
+        this.requestNumber = requestNumber;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public ArrayList<InetAddress> getListOfParticipants() {
+        return listOfParticipants;
+    }
+
+    public void setListOfParticipants(ArrayList<InetAddress> listOfParticipants) {
+        this.listOfParticipants = listOfParticipants;
+    }
+
+    public int getDay(){
+        return dateTime.getDay();
+    }
+    public int getMonth(){
+        return dateTime.getMonth();
+    }
+    public int getYear(){
+        return dateTime.getYear();
+    }
+    public int getTime(){
+        return dateTime.getTime();
+    }
+
+    public int getMinimumNumberOfParticipants() {
+        return minimumNumberOfParticipants;
+    }
+
+    public void setMinimumNumberOfParticipants(int minimumNumberOfParticipants) {
+        this.minimumNumberOfParticipants = minimumNumberOfParticipants;
+    }
+
+
 
     private void requestParticipantList() {
 
@@ -91,7 +168,6 @@ public class RequestMessage extends UDPMessage{
 //        socket.send(sendPacket);
 //        socket.receive();
 //
-
     }
 
     private byte[] getBytes(UDPMessage message) throws IOException {
@@ -103,67 +179,21 @@ public class RequestMessage extends UDPMessage{
         return outputStream.toByteArray();
     }
 
-    public int getMinimumNumberOfParticipants() {
-        return minimumNumberOfParticipants;
-    }
-
-    public void setMinimumNumberOfParticipants(int minimumNumberOfParticipants) {
-        this.minimumNumberOfParticipants = minimumNumberOfParticipants;
-    }
-
-    public int getRequestNumber() {
-        return requestNumber;
-    }
-
-    public void setRequestNumber(int requestNumber) {
-        this.requestNumber = requestNumber;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-
-
-    public ArrayList<InetAddress> getListOfParticipants() {
-        return listOfParticipants;
-    }
-
-    public void setListOfParticipants(ArrayList<InetAddress> listOfParticipants) {
-        this.listOfParticipants = listOfParticipants;
-    }
-
     public void displayMessage(){
+
         System.out.println("Message type: " + getType());
         System.out.println("Request Number: " + getRequestNumber());
+
         System.out.println("Day: " + dateTime.getDay());
         System.out.println("Month: " + dateTime.getMonth());
         System.out.println("Year: " + dateTime.getYear());
         System.out.println("Time: " + dateTime.getTime());
 
+
+
         System.out.println("Minimum number of participants: " + getMinimumNumberOfParticipants());
         System.out.println("Topic: " + getTopic());
 
-
     }
-
-    public int getDay(){
-        return dateTime.getDay();
-    }
-    public int getMonth(){
-        return dateTime.getMonth();
-    }
-    public int getYear(){
-        return dateTime.getYear();
-    }
-
-    public int getTime(){
-        return dateTime.getTime();
-    }
-
 
 }
