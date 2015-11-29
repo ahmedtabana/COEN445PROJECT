@@ -45,6 +45,8 @@ public class Client {
             SendRegisterMessage(serverPort, IPAddress, sendPacket);
 
 
+            socket.receive(receivePacket);
+            UDPMessage RegisterConfirmMessage = getUdpMessage(receiveData);
 
 
             UDPMessage message = null;
@@ -61,7 +63,7 @@ public class Client {
                 socket.receive(receivePacket);
 
                 
-                UDPMessage fromServerMessage = getUdpMessage(receiveData, message);
+                UDPMessage fromServerMessage = getUdpMessage(receiveData);
 
                 System.out.println("Enter Message type:");
                 System.out.println("Format: coen445.server.MessageClassName");
@@ -140,14 +142,15 @@ public class Client {
         return serverAddress;
     }
 
-    private UDPMessage getUdpMessage(byte[] receiveData, UDPMessage message) {
+    private UDPMessage getUdpMessage(byte[] receiveData) {
         ByteArrayInputStream in = new ByteArrayInputStream(receiveData);
+        UDPMessage message = null;
         try {
 
             ObjectInputStream is = new ObjectInputStream(in);
             message = (UDPMessage) is.readObject();
 
-            System.out.println("UDPMessage object received = "+ message);
+            System.out.println("Client received message: "+ message);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -161,8 +164,7 @@ public class Client {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ObjectOutputStream os = new ObjectOutputStream(outputStream);
         os.writeObject(message);
-        System.out.println("From Client, creating message object:");
-        System.out.println(message.toString());
+        System.out.println("From Client, creating message object: " + message.toString());
         return outputStream.toByteArray();
     }
 

@@ -1,7 +1,7 @@
 package coen445.server;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
+import com.sun.xml.internal.rngom.parse.host.Base;
+
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
@@ -15,8 +15,8 @@ public class ResponseThread implements Runnable {
     int port;
     UDPMessage message;
     DatagramSocket socket;
-    Responder responder;
-
+//    IResponder IResponder;
+    BaseResponder Responder;
     ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
 
         sendData = new byte[Server.BUFFER_SIZE];
@@ -24,31 +24,21 @@ public class ResponseThread implements Runnable {
         this.port = port;
         this.socket = socket;
         this.message = message;
-        responder = ResponderFactory.createResponder(message.getType());
+//        IResponder = ResponderFactory.createResponder(message.getType());
+        Responder = ResponderFactory.createResponder(message.getType());
+
     }
 
     @Override
     public void run() {
+        Responder.setup( message,  IPAddress,  port,  socket);
+        Responder.respond();
 
-        responder.respond();
-        processTheMessage(message);
-        try {
-            sendData = Server.getBytes(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-        try {
-            socket.send(sendPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        IResponder.respond();
+
     }
 
-    private UDPMessage processTheMessage(UDPMessage message) {
-        message.setType("Response");
-        return message;
-    }
+
 
 }
 

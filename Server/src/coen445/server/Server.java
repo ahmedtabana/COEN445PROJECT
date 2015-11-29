@@ -3,7 +3,6 @@ package coen445.server;
  * Created by Ahmed on 15-10-25.
  */
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.*;
 import java.net.*;
 import java.util.Set;
@@ -14,7 +13,7 @@ public class Server{
 
     public static final int BUFFER_SIZE = 1024;
     private static DatagramSocket serverSocket;
-    private ConcurrentHashMap<InetAddress,ParticipantData> IpToData;
+    public static ConcurrentHashMap<InetAddress,ParticipantData> IpToData;
 
 
     public Server() {
@@ -117,8 +116,8 @@ public class Server{
             System.out.println("RECEIVED Address: " + IPAddress);
             int port = receivePacket.getPort();
             System.out.println("RECEIVED Port: " + port);
-            addIpToData(IPAddress,port);
-            displayListOfParticipants();
+
+
             UDPMessage message;
             message = getUdpMessage(receiveData);
 
@@ -130,30 +129,6 @@ public class Server{
         }
     }
 
-    private void addIpToData(InetAddress ipAddress, int port) {
-
-        ParticipantData data = new ParticipantData(ipAddress,port);
-
-
-            IpToData.put(ipAddress, data);
-
-
-    }
-
-    private void displayListOfParticipants(){
-
-        Set<InetAddress> mySet = IpToData.keySet();
-
-        for(InetAddress i : mySet){
-
-            ParticipantData data = IpToData.get(i);
-
-            System.out.println("IPAddress: " + data.getIPAddress());
-            System.out.println("Port: " + data.getPort());
-        }
-
-    }
-
     private UDPMessage getUdpMessage(byte[] receiveData) {
         UDPMessage message = null;
         ByteArrayInputStream in = new ByteArrayInputStream(receiveData);
@@ -162,7 +137,8 @@ public class Server{
             ObjectInputStream is = new ObjectInputStream(in);
             message = (UDPMessage) is.readObject();
 
-            System.out.println("UDPMessage object received = "+ message);
+            System.out.println("RECEIVED Type: "+ message);
+            System.out.println(" ");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -176,8 +152,7 @@ public class Server{
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ObjectOutputStream os = new ObjectOutputStream(outputStream);
         os.writeObject(message);
-        System.out.println("From Server, creating message object:");
-        System.out.println(message.toString());
+        System.out.println("From Server, creating message object: " + message.toString());
         return outputStream.toByteArray();
     }
 

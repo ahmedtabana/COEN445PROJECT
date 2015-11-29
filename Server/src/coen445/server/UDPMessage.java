@@ -28,7 +28,7 @@ public abstract class UDPMessage implements Serializable {
 
     public String toString(){
         String result;
-        result = "Type= " + getType();
+        result = getType();
         return result;
     }
 }
