@@ -1,11 +1,15 @@
 package coen445.server;
 
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
+
+import coen445.client.*;
 
 
 /**
@@ -18,9 +22,11 @@ public class RequestMessage extends UDPMessage{
 
     private int requestNumber;
     private DateTime dateTime;
-    private ArrayList<InetAddress> listOfParticipants;
+    private CopyOnWriteArraySet<InetAddress> setOfParticipants;
     private int minimumNumberOfParticipants;
     private String topic;
+
+    private CopyOnWriteArrayList<InetAddress> availableParticipantsList = Client.availableParticipantsList;
 
 
     public RequestMessage() {
@@ -32,12 +38,13 @@ public class RequestMessage extends UDPMessage{
         setRequestNumber(counter);
 
         dateTime = new DateTime();
-        listOfParticipants = new ArrayList<InetAddress>();
+        setOfParticipants = new CopyOnWriteArraySet<InetAddress>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         while(!dateTimeReady(br));
-        while(!listOfParticipantsReady());
+        displayListOfAvailableParticipants();
+        while(!listOfParticipantsReady(br));
         while(!minimumNumOfParticipantsReady(br));
         while(!topicReady(br));
 
@@ -45,15 +52,84 @@ public class RequestMessage extends UDPMessage{
 
     }
 
-    private boolean listOfParticipantsReady() {
-        //todo
+    private void displayListOfAvailableParticipants() {
+
+        System.out.println(" ");
+        System.out.println("List of available participants:");
+
+        for( InetAddress address : availableParticipantsList){
+            System.out.println(address);
+        }
+        System.out.println(" ");
+    }
+
+    private boolean listOfParticipantsReady(BufferedReader br) {
+
+        int numOfParticipants;
+
+        try {
+
+            System.out.println("Please enter the number of participants you wish to have in your list of participants");
+            numOfParticipants = Integer.parseInt(br.readLine());
+
+            if(numOfParticipants > availableParticipantsList.size()){
+                System.out.println("Number of participants must be less than the number of participants currently available");
+                return false;
+            }
+
+            int counter = 1;
+            while(counter <= numOfParticipants) {
+                if(setOfParticipants.add(getParticipantAddress(br, counter))){
+                    counter++;
+                }
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (NumberFormatException e) {
+            System.out.println("Not an Integer");
+            return false;
+        }
         return true;
+    }
+
+    private InetAddress getParticipantAddress(BufferedReader br, int counter) {
+
+        InetAddress participantAddress = null;
+
+        boolean isReady = false;
+        while(!isReady) {
+
+            System.out.println("Please select an IP address from the list for Participant #" + counter);
+            displayListOfAvailableParticipants();
+
+            try {
+                participantAddress = InetAddress.getByName(br.readLine());
+                System.out.println("You entered InetAddress = " + participantAddress);
+                if(!availableParticipantsList.contains(participantAddress)){
+                    System.out.println("The IP address you entered is not on the list of available participants");
+                    isReady =false;
+                }
+                else{
+                    isReady = true;
+                }
+            } catch (IOException e) {
+                System.out.println("Not an Integer");
+                isReady = false;
+            }
+        }
+        return participantAddress;
     }
 
     private boolean minimumNumOfParticipantsReady(BufferedReader br) {
         try {
-            System.out.println("Please enter the minimum number of participants");
+            System.out.println("Please enter the minimum number of participants that must attend");
             setMinimumNumberOfParticipants(Integer.parseInt(br.readLine()));
+            if(getMinimumNumberOfParticipants() > setOfParticipants.size()){
+                System.out.println("minimum number of attendees should be less than or equal to total number on participants ");
+                return false;
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,13 +191,10 @@ public class RequestMessage extends UDPMessage{
         this.topic = topic;
     }
 
-    public ArrayList<InetAddress> getListOfParticipants() {
-        return listOfParticipants;
+    public CopyOnWriteArraySet<InetAddress> getSetOfParticipants() {
+        return setOfParticipants;
     }
 
-    public void setListOfParticipants(ArrayList<InetAddress> listOfParticipants) {
-        this.listOfParticipants = listOfParticipants;
-    }
 
     public int getDay(){
         return dateTime.getDay();
@@ -189,7 +262,10 @@ public class RequestMessage extends UDPMessage{
         System.out.println("Year: " + dateTime.getYear());
         System.out.println("Time: " + dateTime.getTime());
 
-
+        System.out.println("Set of Participants:");
+        for(InetAddress address : setOfParticipants){
+            System.out.println(address);
+        }
 
         System.out.println("Minimum number of participants: " + getMinimumNumberOfParticipants());
         System.out.println("Topic: " + getTopic());

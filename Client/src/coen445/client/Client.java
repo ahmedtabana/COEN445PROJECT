@@ -6,6 +6,7 @@ package coen445.client;
 
 import coen445.server.MessageFactory;
 import coen445.server.UDPMessage;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import java.io.*;
 import java.net.*;
@@ -14,6 +15,8 @@ public class Client {
 
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
+    public static CopyOnWriteArrayList<InetAddress> availableParticipantsList;
+
 
     Client (){
     }
@@ -23,7 +26,14 @@ public class Client {
         try {
 
             socket = new DatagramSocket();
+            availableParticipantsList = new CopyOnWriteArrayList<InetAddress>();
+            availableParticipantsList.add(InetAddress.getByName("183.188.0.2"));
+            availableParticipantsList.add(InetAddress.getByName("123.184.0.2"));
 
+
+            for(InetAddress address : availableParticipantsList){
+                System.out.println(address);
+            }
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
 
@@ -32,10 +42,8 @@ public class Client {
            BufferedReader inFromUser =
                     new BufferedReader(new InputStreamReader(System.in));
 
-             int serverPort = getServerPort(inFromUser);
+            int serverPort = getServerPort(inFromUser);
 
-//            String serverAddress = getServerAddress(inFromUser);
-//            InetAddress IPAddress = InetAddress.getByName(serverAddress);
             InetAddress IPAddress = getServerAddress(inFromUser);
 
             byte[] sendData = new byte[1024];
@@ -63,12 +71,7 @@ public class Client {
 
                 
                 UDPMessage fromServerMessage = getUdpMessage(receiveData);
-
-//                System.out.println("Enter Message type:");
-//                System.out.println("Format: coen445.server.MessageClassName");
-//
-//                String type2 = inFromUser.readLine();
-//                message.setType(type2);
+                
                 UDPMessage newMessage = null;
                 newMessage = getMessage();
                 sendData = getBytes(newMessage);
