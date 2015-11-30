@@ -54,9 +54,7 @@ public class RequestResponder extends BaseResponder {
 
 
     private boolean RoomIsUnavailable() {
-        //check inside the server if the date and time given are reserved in the room reservation list
-        // if reserved return false
-        // otherwise return true
+
         for (DateTime dateTime : Server.roomReservationList) {
 
             boolean conflictFound = dateTime.getDay() == requestMessage.getDay() && dateTime.getMonth() == requestMessage.getMonth() &&

@@ -17,7 +17,7 @@ public class ResponseThread implements Runnable {
     DatagramSocket socket;
 //    IResponder IResponder;
     BaseResponder Responder;
-    ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
+    public ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
 
         sendData = new byte[Server.BUFFER_SIZE];
         this.IPAddress = IPAddress;

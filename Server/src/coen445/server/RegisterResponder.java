@@ -10,8 +10,10 @@ import java.util.Set;
  */
 public class RegisterResponder extends BaseResponder {
 
+    RegisterUpdateMessage registerUpdateMessage;
 
     public RegisterResponder() {
+
     }
 
 
@@ -20,27 +22,36 @@ public class RegisterResponder extends BaseResponder {
 
         System.out.println("this is the RegisterResponder respond method");
 
-        addIpToData(IPAddress,port);
+        addIpToData(IPAddress, port);
         displayListOfParticipants();
-        processTheMessage(message);
-        try {
-            sendData = Server.getBytes(message);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        Set<InetAddress> inetAddresses = Server.ipToData.keySet();
+
+        for(InetAddress i : inetAddresses){
+
+            ParticipantData data = Server.ipToData.get(i);
+
+            UDPMessage udpMessage = new RegisterUpdateMessage();
+
+            try {
+                sendData = Server.getBytes(udpMessage);
+            } catch (IOException e) {
+                System.out.println("error in RegisterResponder getBytes");
+                e.printStackTrace();
+            }
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, data.getIPAddress(), data.getPort());
+            try {
+                socket.send(sendPacket);
+            } catch (IOException e) {
+                System.out.println("error in RegisterResponder sendPacket");
+
+                e.printStackTrace();
+            }
+
         }
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-        try {
-            socket.send(sendPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
-
-    private UDPMessage processTheMessage(UDPMessage message) {
-        message.setType("RegisterResponse");
-        return message;
-    }
 
     private void addIpToData(InetAddress ipAddress, int port) {
         System.out.println("Adding client to list of registered users");

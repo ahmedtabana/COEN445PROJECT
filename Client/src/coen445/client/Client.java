@@ -4,18 +4,19 @@ package coen445.client;
  * Created by Ahmed on 15-10-25.
  */
 
-import coen445.server.MessageFactory;
-import coen445.server.UDPMessage;
+import coen445.server.*;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class Client {
 
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
-    public static CopyOnWriteArrayList<InetAddress> availableParticipantsList;
+    public static CopyOnWriteArraySet<InetAddress> availableParticipantsList;
 
 
     Client (){
@@ -26,12 +27,13 @@ public class Client {
         try {
 
             socket = new DatagramSocket();
-            availableParticipantsList = new CopyOnWriteArrayList<InetAddress>();
-            availableParticipantsList.add(InetAddress.getByName("183.188.0.2"));
-            availableParticipantsList.add(InetAddress.getByName("123.184.0.2"));
+            availableParticipantsList = new CopyOnWriteArraySet<InetAddress>();
+//            availableParticipantsList.add(InetAddress.getByName("183.188.0.2"));
+//            availableParticipantsList.add(InetAddress.getByName("123.184.0.2"));
 
 
             for(InetAddress address : availableParticipantsList){
+                System.out.println("available participant list at client startup");
                 System.out.println(address);
             }
             byte[] receiveData = new byte[1024];
@@ -53,7 +55,12 @@ public class Client {
 
 
             socket.receive(receivePacket);
-            UDPMessage RegisterConfirmMessage = getUdpMessage(receiveData);
+
+            UDPMessage registerConfirmMessage = getUdpMessage(receiveData);
+            BaseResponder registerUpdateResponder = new RegisterUpdateResponder();
+            registerUpdateResponder.setup(registerConfirmMessage, receivePacket.getAddress(), receivePacket.getPort(), socket);
+            registerUpdateResponder.respond();
+
 
 
             UDPMessage message = null;
@@ -71,6 +78,18 @@ public class Client {
 
                 
                 UDPMessage fromServerMessage = getUdpMessage(receiveData);
+
+
+                InetAddress address = receivePacket.getAddress();
+                System.out.println(" RECEIVED Address: " + address);
+                int port = receivePacket.getPort();
+                System.out.println(" RECEIVED Port: " + port);
+
+
+                ResponseThread myResponseThread = new ResponseThread(fromServerMessage,IPAddress,port, socket);
+
+                Thread t = new Thread(myResponseThread);
+                t.start();
                 
                 UDPMessage newMessage = null;
                 newMessage = getMessage();

@@ -5,8 +5,10 @@ package coen445.server;
 
 import java.io.*;
 import java.net.*;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class Server{
 
@@ -30,12 +32,35 @@ public class Server{
         InetAddress serverIPAddress;
         serverIPAddress = getServerInetAddress();
 
-        // should make this thread safe, not more than one object should use this at one time
         createServerSocket(serverPort, serverIPAddress);
         ipToData = new ConcurrentHashMap<InetAddress,ParticipantData>();
 
         setupRoomAvailability();
+        setupIpToData();
 
+    }
+
+    private void setupIpToData() {
+
+        try {
+            ipToData.put(InetAddress.getByName("123.184.0.2"),new ParticipantData(InetAddress.getByName("123.184.0.2"),200));
+            ipToData.put(InetAddress.getByName("111.124.0.1"),new ParticipantData(InetAddress.getByName("111.124.0.1"),199));
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Displaying the list of registered users:");
+        System.out.println("");
+        Set<InetAddress> mySet = Server.ipToData.keySet();
+
+        for(InetAddress i : mySet){
+
+            ParticipantData data = Server.ipToData.get(i);
+
+            System.out.println("IPAddress: " + data.getIPAddress());
+            System.out.println("Port: " + data.getPort());
+            System.out.println(" ");
+        }
     }
 
 
@@ -106,7 +131,6 @@ public class Server{
         System.out.println("Server Ip is set to: " + serverSocket.getLocalAddress());
         System.out.println("");
     }
-
 
 
     public void listen(){

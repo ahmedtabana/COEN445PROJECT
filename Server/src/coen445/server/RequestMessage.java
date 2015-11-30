@@ -26,7 +26,7 @@ public class RequestMessage extends UDPMessage{
     private int minimumNumberOfParticipants;
     private String topic;
 
-    private CopyOnWriteArrayList<InetAddress> availableParticipantsList = Client.availableParticipantsList;
+    private CopyOnWriteArraySet<InetAddress> availableParticipantsList = Client.availableParticipantsList;
 
 
     public RequestMessage() {
