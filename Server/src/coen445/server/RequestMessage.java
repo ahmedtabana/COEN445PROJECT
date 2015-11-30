@@ -175,6 +175,7 @@ public class RequestMessage extends UDPMessage{
         return true;
     }
 
+
     public int getRequestNumber() {
         return requestNumber;
     }
@@ -207,6 +208,14 @@ public class RequestMessage extends UDPMessage{
     }
     public int getTime(){
         return dateTime.getTime();
+    }
+
+    public DateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(DateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public int getMinimumNumberOfParticipants() {

@@ -17,9 +17,24 @@ public class Client {
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
     public static CopyOnWriteArraySet<InetAddress> availableParticipantsList;
+    public static CopyOnWriteArrayList<DateTime> localAgenda;
 
 
     Client (){
+        setupLocalAgenda();
+    }
+
+    private void setupLocalAgenda() {
+
+        localAgenda = new CopyOnWriteArrayList<DateTime>();
+
+        DateTime firstSlot = new DateTime();
+        firstSlot.setDay(1);
+        firstSlot.setMonth(10);
+        firstSlot.setYear(2016);
+        firstSlot.setTime(10);
+
+        localAgenda.add(firstSlot);
     }
 
     public void connect(){

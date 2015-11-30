@@ -2,6 +2,8 @@ package coen445.server;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.util.Set;
 
 /**
  * Created by Ahmed on 15-11-24.
@@ -37,18 +39,46 @@ public class RequestResponder extends BaseResponder {
             }
         } else {
             UDPMessage inviteMessage;
-            inviteMessage = new InviteMessage();
-            try {
-                sendData = Server.getBytes(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            inviteMessage = new InviteMessage(IPAddress,((RequestMessage) message).getDateTime(),((RequestMessage) message).getTopic());
+            System.out.println("creating invite message");
+            inviteMessage.displayMessage();
+
+            //send invite message to only the participants in this message
+
+
+            for(InetAddress i : ((RequestMessage) message).getSetOfParticipants()){
+
+                ParticipantData data = Server.ipToData.get(i);
+
+
+                try {
+                    sendData = Server.getBytes(inviteMessage);
+                } catch (IOException e) {
+                    System.out.println("error in RequestResponder getBytes");
+                    e.printStackTrace();
+                }
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, data.getIPAddress(), data.getPort());
+                try {
+                    socket.send(sendPacket);
+                } catch (IOException e) {
+                    System.out.println("error in RequestResponder sendPacket");
+
+                    e.printStackTrace();
+                }
+
             }
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-            try {
-                socket.send(sendPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+//            try {
+//                sendData = Server.getBytes(inviteMessage);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+//            try {
+//                socket.send(sendPacket);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

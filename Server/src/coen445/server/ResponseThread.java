@@ -15,8 +15,8 @@ public class ResponseThread implements Runnable {
     int port;
     UDPMessage message;
     DatagramSocket socket;
-//    IResponder IResponder;
     BaseResponder Responder;
+
     public ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
 
         sendData = new byte[Server.BUFFER_SIZE];
@@ -24,9 +24,7 @@ public class ResponseThread implements Runnable {
         this.port = port;
         this.socket = socket;
         this.message = message;
-//        IResponder = ResponderFactory.createResponder(message.getType());
         Responder = ResponderFactory.createResponder(message.getType());
-
     }
 
     @Override
@@ -34,11 +32,6 @@ public class ResponseThread implements Runnable {
         Responder.setup( message,  IPAddress,  port,  socket);
         Responder.respond();
 
-//        IResponder.respond();
-
     }
-
-
-
 }
 

@@ -5,9 +5,11 @@ package coen445.server;
  */
 public class UnavailableResponder extends BaseResponder {
 
+    UnavailableMessage unavailableMessage;
     @Override
     public void respond() {
         super.respond();
-        System.out.println("Room is Unavailable");
+        unavailableMessage = (UnavailableMessage) message;
+        unavailableMessage.displayMessage();
     }
 }
