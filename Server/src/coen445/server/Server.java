@@ -49,6 +49,10 @@ public class Server{
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        displayRegisteredUsers();
+    }
+
+    private void displayRegisteredUsers() {
         System.out.println("Displaying the list of registered users:");
         System.out.println("");
         Set<InetAddress> mySet = Server.ipToData.keySet();
@@ -93,7 +97,7 @@ public class Server{
 
         try {
             serverIPAddress = InetAddress.getLocalHost();
-            System.out.println("InetAddress = " + serverIPAddress);
+//            System.out.println("InetAddress = " + serverIPAddress);
         } catch (UnknownHostException e) {
             System.out.println("Server IP address is not known");
             e.printStackTrace();
