@@ -1,5 +1,7 @@
 package coen445.server;
 
+import coen445.client.Client;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -38,18 +40,20 @@ public class RequestResponder extends BaseResponder {
                 e.printStackTrace();
             }
         } else {
+
             UDPMessage inviteMessage;
-            inviteMessage = new InviteMessage(IPAddress,((RequestMessage) message).getDateTime(),((RequestMessage) message).getTopic());
             System.out.println("creating invite message");
+            inviteMessage = new InviteMessage(IPAddress,((RequestMessage) message).getDateTime(),((RequestMessage) message).getTopic());
             inviteMessage.displayMessage();
 
+
+            MappingMeetingNumberToMeetingData((InviteMessage) inviteMessage);
+
             //send invite message to only the participants in this message
-
-
             for(InetAddress i : ((RequestMessage) message).getSetOfParticipants()){
 
                 ParticipantData data = Server.ipToData.get(i);
-
+                
 
                 try {
                     sendData = Server.getBytes(inviteMessage);
@@ -68,18 +72,31 @@ public class RequestResponder extends BaseResponder {
 
             }
 
-//            try {
-//                sendData = Server.getBytes(inviteMessage);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-//            try {
-//                socket.send(sendPacket);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         }
+    }
+
+    private void MappingMeetingNumberToMeetingData(InviteMessage inviteMessage) {
+
+
+        System.out.println("Mapping meeting number to meeting data");
+        MeetingData meetingData = new MeetingData();
+        meetingData.setRequester(inviteMessage.getRequester());
+        meetingData.setMinimumNumberOfParticipants(requestMessage.getMinimumNumberOfParticipants());
+        meetingData.setMeetingNumber(inviteMessage.getMeetingNumber());
+        meetingData.setSetOfRequestedParticipants(requestMessage.getSetOfParticipants());
+        meetingData.displayMeetingData();
+
+        Server.meetingNumberToMeetingData.put(inviteMessage.getMeetingNumber(),meetingData);
+
+
+        System.out.println("displaying map contents");
+        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
+
+        for( int i : mySet1){
+            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
+            myData.displayMeetingData();
+        }
+
     }
 
 

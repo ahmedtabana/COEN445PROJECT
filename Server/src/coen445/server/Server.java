@@ -16,6 +16,8 @@ public class Server{
     private static DatagramSocket serverSocket;
     public static ConcurrentHashMap<InetAddress,ParticipantData> ipToData;
     public static CopyOnWriteArrayList<DateTime> roomReservationList;
+    public static ConcurrentHashMap<Integer,MeetingData> meetingNumberToMeetingData;
+
 
     public Server() {
 
@@ -34,6 +36,7 @@ public class Server{
 
         createServerSocket(serverPort, serverIPAddress);
         ipToData = new ConcurrentHashMap<InetAddress,ParticipantData>();
+        meetingNumberToMeetingData = new ConcurrentHashMap<Integer,MeetingData>();
 
         setupRoomAvailability();
         setupIpToData();

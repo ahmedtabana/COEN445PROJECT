@@ -57,6 +57,18 @@ public class InviteMessage extends UDPMessage {
         this.topic = topic;
     }
 
+    public int getDay(){
+        return dateTime.getDay();
+    }
+    public int getMonth(){
+        return dateTime.getMonth();
+    }
+    public int getYear(){
+        return dateTime.getYear();
+    }
+    public int getTime(){
+        return dateTime.getTime();
+    }
 
     @Override
     public void displayMessage() {

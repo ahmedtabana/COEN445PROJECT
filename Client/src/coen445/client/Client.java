@@ -6,6 +6,7 @@ package coen445.client;
 
 import coen445.server.*;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import java.io.*;
@@ -20,6 +21,7 @@ public class Client {
     public static CopyOnWriteArrayList<DateTime> localAgenda;
 
 
+
     Client (){
         setupLocalAgenda();
     }
@@ -29,7 +31,7 @@ public class Client {
         localAgenda = new CopyOnWriteArrayList<DateTime>();
 
         DateTime firstSlot = new DateTime();
-        firstSlot.setDay(1);
+        firstSlot.setDay(2);
         firstSlot.setMonth(10);
         firstSlot.setYear(2016);
         firstSlot.setTime(10);
@@ -43,6 +45,7 @@ public class Client {
 
             socket = new DatagramSocket();
             availableParticipantsList = new CopyOnWriteArraySet<InetAddress>();
+
 //            availableParticipantsList.add(InetAddress.getByName("183.188.0.2"));
 //            availableParticipantsList.add(InetAddress.getByName("123.184.0.2"));
 
@@ -215,7 +218,7 @@ public class Client {
         return outputStream.toByteArray();
     }
 
-
+    //todo must add error handling here
     private int getServerPort(BufferedReader inFromUser) throws IOException {
         System.out.println("Please Configure Client");
         System.out.println("Enter the server port number that the client will connect to:");

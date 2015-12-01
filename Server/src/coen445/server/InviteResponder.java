@@ -1,5 +1,7 @@
 package coen445.server;
 
+import coen445.client.Client;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 
@@ -8,38 +10,69 @@ import java.net.DatagramPacket;
  */
 public class InviteResponder extends BaseResponder {
 
+    InviteMessage inviteMessage;
+
     @Override
     public void respond() {
         super.respond();
+
         System.out.println("Invite responder respond method");
-        InviteMessage inviteMessage = (InviteMessage) message;
+        inviteMessage = (InviteMessage) message;
         inviteMessage.displayMessage();
 
-        if (ClientAvailable()) {
+        if (!ClientIsAvailable()) {
 
-
-            UDPMessage acceptMessage = new AcceptMessage(message.getRequestNumber());
-
-            try {
-                sendData = Server.getBytes(acceptMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-            try {
-                socket.send(sendPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Sending Reject Message");
+            UDPMessage rejectMessage = new RejectMessage(inviteMessage.getMeetingNumber());
+            sendMessage(rejectMessage);
 
         } else {
 
-            System.out.println("Client not available");
+            updateLocalAgenda();
+            System.out.println("Sending Accept Message");
+            UDPMessage acceptMessage = new AcceptMessage(inviteMessage.getMeetingNumber());
+            sendMessage(acceptMessage);
         }
     }
 
-    private boolean ClientAvailable() {
-        System.out.println("Checking the local client");
-        return false;
+    private void sendMessage(UDPMessage sendMessage) {
+        try {
+            sendData = Server.getBytes(sendMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+        try {
+            socket.send(sendPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    private void updateLocalAgenda() {
+        System.out.println("Updating local Agenda");
+        Client.localAgenda.add(inviteMessage.getDateTime());
+
+    }
+
+    private boolean ClientIsAvailable() {
+
+        System.out.println("Checking the local MS agenda");
+
+        for (DateTime dateTime : Client.localAgenda) {
+
+            boolean conflictFound = dateTime.getDay() == inviteMessage.getDay() && dateTime.getMonth() == inviteMessage.getMonth() &&
+                    dateTime.getYear() == inviteMessage.getYear() && dateTime.getTime() == inviteMessage.getTime();
+            if (conflictFound) {
+                System.out.println("Person is not Available");
+                return false;
+            }
+        }
+
+        System.out.println("Person is Available");
+
+        return true;
+
+    }
+
 }
