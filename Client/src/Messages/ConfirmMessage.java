@@ -1,18 +1,19 @@
 package Messages;
 
 /**
- * Created by Ahmed on 15-11-30.
+ * Created by Ahmed on 15-12-02.
  */
-public class RejectMessage extends UDPMessage {
+public class ConfirmMessage extends UDPMessage {
 
     private static final long serialVersionUID = 7526472295622776147L;
     private int meetingNumber;
 
-    public RejectMessage(int meetingNumber){
+    public ConfirmMessage(int meetingNumber){
 
         this.meetingNumber = meetingNumber;
-        setType("Reject");
+        setType("Accept");
     }
+
 
     public int getMeetingNumber() {
         return meetingNumber;
@@ -24,7 +25,6 @@ public class RejectMessage extends UDPMessage {
 
     @Override
     public void displayMessage() {
-
         super.displayMessage();
         System.out.println("Message type: " + getType());
         System.out.println("Meeting Number: " + meetingNumber);

@@ -14,11 +14,14 @@ public class MeetingData {
     private InetAddress requester;
     private CopyOnWriteArraySet<InetAddress> setOfRequestedParticipants;
     private CopyOnWriteArraySet<InetAddress> setOfAcceptedParticipants;
+    private CopyOnWriteArraySet<InetAddress> setOfRejectedParticipants;
+
 
     public MeetingData()
     {
         setOfRequestedParticipants = new CopyOnWriteArraySet<InetAddress>();
         setOfAcceptedParticipants = new CopyOnWriteArraySet<InetAddress>();
+        setOfRejectedParticipants = new CopyOnWriteArraySet<InetAddress>();
     }
 
     public int getMeetingNumber() {
@@ -61,6 +64,15 @@ public class MeetingData {
         this.setOfAcceptedParticipants = setOfAcceptedParticipants;
     }
 
+
+    public CopyOnWriteArraySet<InetAddress> getSetOfRejectedParticipants() {
+        return setOfRejectedParticipants;
+    }
+
+    public void setSetOfRejectedParticipants(CopyOnWriteArraySet<InetAddress> setOfRejectedParticipants) {
+        this.setOfRejectedParticipants = setOfRejectedParticipants;
+    }
+
     public void displayMeetingData(){
 
         System.out.println("");
@@ -76,6 +88,11 @@ public class MeetingData {
         for(InetAddress address : getSetOfAcceptedParticipants()){
             System.out.println(address);
         }
+
+        System.out.println("Set of Rejected Participants:");
+        for(InetAddress address : getSetOfRejectedParticipants()){
+            System.out.println(address);
+        }
         System.out.println("");
 
 
@@ -84,4 +101,44 @@ public class MeetingData {
     public void addParticipantToSetOfAccepted(InetAddress ipAddress) {
         setOfAcceptedParticipants.add(ipAddress);
     }
+
+
+    public void addParticipantToSetOfRejected(InetAddress ipAddress) {
+        setOfRejectedParticipants.add(ipAddress);
+    }
+
+    public int getNumberOfAcceptedParticipants(){
+
+        if(setOfAcceptedParticipants.isEmpty()){
+            return 0;
+        } else{
+
+            return setOfAcceptedParticipants.size();
+        }
+    }
+
+    public int getNumberOfRequestedParticipants(){
+
+        if(setOfRequestedParticipants.isEmpty()){
+            return 0;
+        } else{
+
+            return setOfRequestedParticipants.size();
+        }
+    }
+
+
+    public int getNumberOfRejectedParticipants(){
+
+        if(setOfRejectedParticipants.isEmpty()){
+            return 0;
+        } else{
+
+            return setOfRejectedParticipants.size();
+        }
+    }
+
+
+
 }
+

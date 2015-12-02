@@ -2,6 +2,8 @@ package coen445.server;
 
 import java.util.Set;
 import Messages.*;
+import java.util.Timer;
+
 /**
  * Created by Ahmed on 15-12-01.
  */
@@ -16,20 +18,66 @@ public class AcceptResponder extends BaseResponder {
         acceptMessage = (AcceptMessage) message;
         updateMeetingData();
 
-        // todo also check that everybody has replied
-        if(numberOfAcceptancesEqualOrHigherThanMinimumParticipants()){
+        // if not all participants have replied with either reject or accept, wait a specific time
+        // current wait period is set to 5 sec
+        if(!allParticipantsReplied()){
+            System.out.println("Some participants have not replied yet, waiting...");
+            waitForResponses();
+            System.out.println("Wait period has expired");
+
+        }
+        else{
+            System.out.println("Received responses from all participants...");
+        }
+
+
+            if(numberOfAcceptancesEqualOrHigherThanMinimumParticipants()){
 
             sendConfirmMessageToParticipantsWhoAccepted();
             sendScheduledMessageToRequester();
+            }
+            else{
+
+
+                sendCancelMessageToParticipantsWhoAccepted();
+                sendNotScheduledMessageToRequester();
+
+
+            }
+
+
+
+
+    }
+
+    private void sendNotScheduledMessageToRequester() {
+
+        System.out.println("Sending Not-Scheduled Message To Requester");
+
+    }
+
+    private void sendCancelMessageToParticipantsWhoAccepted() {
+
+        System.out.println("Sending Cancel Message To Participants Who Accepted The Request");
+
+    }
+
+    private void waitForResponses() {
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.println("error in Thread sleep");
+            e.printStackTrace();
         }
-        else{
+    }
 
-            System.out.println("sending Cancel message");
+    private boolean allParticipantsReplied() {
 
+        int meetingNumber =  acceptMessage.getMeetingNumber();
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
 
-        }
-
-
+        return (meetingData.getNumberOfAcceptedParticipants() + meetingData.getNumberOfRejectedParticipants()) == meetingData.getNumberOfRequestedParticipants();
     }
 
     private void updateMeetingData() {
@@ -62,12 +110,15 @@ public class AcceptResponder extends BaseResponder {
     }
 
     private void sendScheduledMessageToRequester() {
+
         System.out.println("Sending Scheduled Message To Requester");
+
     }
 
     private void sendConfirmMessageToParticipantsWhoAccepted() {
 
         System.out.println("Sending Confirm Message To Participants Who Accepted The Request");
+
 
     }
 
