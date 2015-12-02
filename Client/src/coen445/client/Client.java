@@ -88,9 +88,6 @@ public class Client {
 
             while(true) {
 
-
-                socket.connect(IPAddress, serverPort);
-
                 socket.send(sendPacket);
                 socket.receive(receivePacket);
 
@@ -113,9 +110,6 @@ public class Client {
                 newMessage = getMessage();
                 sendData = getBytes(newMessage);
                 sendPacket.setData(sendData);
-
-                socket.disconnect();
-
 
             }
 
