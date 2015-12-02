@@ -1,26 +1,17 @@
-package coen445.server;
+package Messages;
 
 /**
  * Created by Ahmed on 15-11-30.
  */
-public class AcceptMessage extends UDPMessage {
-
+public class RejectMessage extends UDPMessage {
 
     private int meetingNumber;
+    private static final long serialVersionUID = 7526472295622776147L;
 
-    public AcceptMessage(int meetingNumber){
+    public RejectMessage(int meetingNumber){
 
         this.meetingNumber = meetingNumber;
-        setType("Accept");
-    }
-
-
-    public int getMeetingNumber() {
-        return meetingNumber;
-    }
-
-    public void setMeetingNumber(int meetingNumber) {
-        this.meetingNumber = meetingNumber;
+        setType("Reject");
     }
 
     @Override

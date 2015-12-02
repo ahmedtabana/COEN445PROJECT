@@ -1,4 +1,4 @@
-package coen445.server;
+package Messages;
 
 import java.io.Serializable;
 
@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by Ahmed on 15-11-28.
  */
 public class DateTime implements Serializable{
+    private static final long serialVersionUID = 7526472295622776147L;
 
     private int day;
     private int month;
@@ -45,3 +46,4 @@ public class DateTime implements Serializable{
     }
 
 }
+

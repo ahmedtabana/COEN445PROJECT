@@ -1,8 +1,8 @@
-package coen445.server;
+package coen445.client;
 
-import coen445.client.Client;
 
 import java.net.InetAddress;
+import Messages.*;
 
 /**
  * Created by Ahmed on 15-11-29.

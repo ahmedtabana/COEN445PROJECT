@@ -1,4 +1,4 @@
-package coen445.server;
+package Messages;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
 public abstract class UDPMessage implements Serializable {
 
     private String type;
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7526472295622776147L;
 
     public String getType() {
         return type;

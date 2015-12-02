@@ -1,10 +1,12 @@
-package coen445.server;
+package Messages;
+
 
 /**
  * Created by Ahmed on 15-11-28.
  */
 public class UnavailableMessage extends UDPMessage {
 
+    private static final long serialVersionUID = 7526472295622776147L;
 
     private int requestNumber;
     private String unAvailable = " , Room is unavailable";

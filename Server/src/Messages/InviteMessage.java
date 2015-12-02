@@ -1,4 +1,4 @@
-package coen445.server;
+package Messages;
 
 import java.net.InetAddress;
 
@@ -8,13 +8,14 @@ import java.net.InetAddress;
 public class InviteMessage extends UDPMessage {
 
     private static int counter = 0;
+    private static final long serialVersionUID = 7526472295622776147L;
 
     private InetAddress requester;
     private int meetingNumber;
     private DateTime dateTime;
     private String topic;
 
-    public InviteMessage(InetAddress requester,DateTime dateTime, String topic){
+    public InviteMessage(InetAddress requester, DateTime dateTime, String topic){
 
 
         this.requester = requester;

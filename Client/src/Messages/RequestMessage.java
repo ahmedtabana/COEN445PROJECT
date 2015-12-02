@@ -1,24 +1,20 @@
-package coen445.server;
+package Messages;
 
+import coen445.client.Client;
 
 import java.io.*;
-import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import coen445.client.*;
 
 
 /**
  * Created by Ahmed on 15-11-16.
  */
 
-public class RequestMessage extends UDPMessage{
+public class RequestMessage extends UDPMessage {
 
     private static int counter = 0;
+    private static final long serialVersionUID = 7526472295622776147L;
 
     private int requestNumber;
     private DateTime dateTime;
@@ -228,29 +224,29 @@ public class RequestMessage extends UDPMessage{
 
 
 
-    private void requestParticipantList() {
-
-        byte[] sendData;
-        byte[] recieveData;
-
-        UDPMessage requestParticipantListMessage = null;
-
-        requestParticipantListMessage = (UDPMessage) new  RequestParticipantListMessage();
-
-
-        try {
-            sendData = getBytes(requestParticipantListMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        DatagramPacket sendPacket;
-//        sendPacket.setData(sendData);
-//        socket.connect(IPAddress, serverPort);
-//        socket.send(sendPacket);
-//        socket.receive();
+//    private void requestParticipantList() {
 //
-    }
+//        byte[] sendData;
+//        byte[] recieveData;
+//
+//        coen445.server.UDPMessage requestParticipantListMessage = null;
+//
+//        requestParticipantListMessage = (coen445.server.UDPMessage) new RequestParticipantListMessage();
+//
+//
+//        try {
+//            sendData = getBytes(requestParticipantListMessage);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        DatagramPacket sendPacket;
+////        sendPacket.setData(sendData);
+////        socket.connect(IPAddress, serverPort);
+////        socket.send(sendPacket);
+////        socket.receive();
+////
+//    }
 
     private byte[] getBytes(UDPMessage message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

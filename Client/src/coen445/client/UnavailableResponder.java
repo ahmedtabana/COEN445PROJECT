@@ -1,4 +1,4 @@
-package coen445.server;
+package coen445.client;
 import Messages.*;
 
 /**

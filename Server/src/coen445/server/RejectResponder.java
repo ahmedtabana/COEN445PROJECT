@@ -1,4 +1,5 @@
 package coen445.server;
+import Messages.*;
 
 /**
  * Created by Ahmed on 15-12-01.

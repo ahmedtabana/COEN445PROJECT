@@ -1,9 +1,11 @@
-package coen445.server;
+package Messages;
+
 
 /**
  * Created by Ahmed on 15-11-24.
  */
 public class RegisterMessage extends UDPMessage {
+    private static final long serialVersionUID = 7526472295622776147L;
 
     public RegisterMessage(){
 

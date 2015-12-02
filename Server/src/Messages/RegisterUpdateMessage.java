@@ -1,4 +1,6 @@
-package coen445.server;
+package Messages;
+
+import coen445.server.Server;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.Set;
 public class RegisterUpdateMessage extends UDPMessage {
 
     private ArrayList<InetAddress> updatedListOfParticipants;
+    private static final long serialVersionUID = 7526472295622776147L;
 
     public RegisterUpdateMessage(){
         updatedListOfParticipants = new ArrayList<InetAddress>();

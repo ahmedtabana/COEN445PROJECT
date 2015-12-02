@@ -1,9 +1,8 @@
-package coen445.server;
-
-import coen445.client.Client;
+package coen445.client;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import Messages.*;
 
 /**
  * Created by Ahmed on 15-11-30.
@@ -37,7 +36,7 @@ public class InviteResponder extends BaseResponder {
 
     private void sendMessage(UDPMessage sendMessage) {
         try {
-            sendData = Server.getBytes(sendMessage);
+            sendData = Client.getBytes(sendMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,3 +75,4 @@ public class InviteResponder extends BaseResponder {
     }
 
 }
+

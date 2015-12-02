@@ -1,6 +1,6 @@
 package coen445.server;
 
-import coen445.client.Client;
+import Messages.*;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

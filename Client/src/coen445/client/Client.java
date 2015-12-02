@@ -4,7 +4,7 @@ package coen445.client;
  * Created by Ahmed on 15-10-25.
  */
 
-import coen445.server.*;
+import Messages.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,6 +14,8 @@ import java.net.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class Client {
+
+    public static final int BUFFER_SIZE = 1024;
 
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
@@ -131,7 +133,7 @@ public class Client {
         byte[] sendData;
         UDPMessage registerMessage = null;
         try {
-            registerMessage = (UDPMessage) Class.forName("coen445.server.RegisterMessage").newInstance();
+            registerMessage = (UDPMessage) Class.forName("Messages.RegisterMessage").newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -204,7 +206,7 @@ public class Client {
         return message;
     }
 
-    private byte[] getBytes(UDPMessage message) throws IOException {
+    public static byte[] getBytes(UDPMessage message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ObjectOutputStream os = new ObjectOutputStream(outputStream);
         os.writeObject(message);

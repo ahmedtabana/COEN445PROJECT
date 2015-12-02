@@ -1,4 +1,4 @@
-package coen445.server;
+package Messages;
 
 import java.io.BufferedReader;
 import java.io.IOException;

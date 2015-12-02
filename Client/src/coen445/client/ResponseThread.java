@@ -1,11 +1,9 @@
-package coen445.server;
+package coen445.client;
 
-
-
-import Messages.*;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import Messages.*;
 
 /**
  * Created by Ahmed on 15-11-03.
@@ -21,7 +19,7 @@ public class ResponseThread implements Runnable {
 
     public ResponseThread(UDPMessage message, InetAddress IPAddress, int port, DatagramSocket socket){
 
-        sendData = new byte[Server.BUFFER_SIZE];
+        sendData = new byte[Client.BUFFER_SIZE];
         this.IPAddress = IPAddress;
         this.port = port;
         this.socket = socket;
@@ -36,4 +34,3 @@ public class ResponseThread implements Runnable {
 
     }
 }
-
