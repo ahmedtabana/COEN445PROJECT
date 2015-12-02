@@ -31,10 +31,12 @@ public class MessageFactory {
                 System.out.println("This is not a correct message type");
 
             } catch (InstantiationException e) {
-                e.printStackTrace();
+                System.out.println("The User is not allowed to send this type of message");
+
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+
         }
 
         return newMessage;
