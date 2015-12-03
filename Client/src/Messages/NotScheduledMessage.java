@@ -12,6 +12,9 @@ public class NotScheduledMessage extends UDPMessage{
 
 
     private int requestNumber;
+
+
+
     private DateTime dateTime;
     private int minimumNumberOfParticipants;
     private CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants;
@@ -21,6 +24,11 @@ public class NotScheduledMessage extends UDPMessage{
     public NotScheduledMessage(){
         setType("NotScheduled");
     }
+
+    public DateTime getDateTime() {
+        return dateTime;
+    }
+
     @Override
     public void displayMessage() {
 
@@ -39,4 +47,6 @@ public class NotScheduledMessage extends UDPMessage{
         System.out.println("Topic: " + topic);
 
     }
+
+
 }

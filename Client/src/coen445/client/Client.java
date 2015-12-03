@@ -21,6 +21,7 @@ public class Client {
     MessageFactory factory = new MessageFactory();
     public static CopyOnWriteArraySet<InetAddress> availableParticipantsList;
     public static CopyOnWriteArrayList<DateTime> localAgenda;
+    public static ConcurrentHashMap<Integer,MeetingData> meetingNumberToMeetingData;
 
 
 
@@ -47,6 +48,7 @@ public class Client {
 
             socket = new DatagramSocket();
             availableParticipantsList = new CopyOnWriteArraySet<InetAddress>();
+            meetingNumberToMeetingData = new ConcurrentHashMap<Integer,MeetingData>();
 
             for(InetAddress address : availableParticipantsList){
                 System.out.println("available participant list at client startup");

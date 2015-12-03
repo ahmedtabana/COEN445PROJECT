@@ -28,6 +28,7 @@ public class InviteResponder extends BaseResponder {
         } else {
 
             addTimeSlotToLocalAgenda();
+            addMappingFromMeetingNumberToMeetingData();
             System.out.println("Sending Accept Message");
             UDPMessage acceptMessage = new AcceptMessage(inviteMessage.getMeetingNumber());
             sendMessage(acceptMessage);
@@ -49,8 +50,33 @@ public class InviteResponder extends BaseResponder {
     }
 
     private void addTimeSlotToLocalAgenda() {
-        System.out.println("Updating local Agenda");
-        Client.localAgenda.add(inviteMessage.getDateTime());
+        System.out.println("Adding time slot to local Agenda");
+        System.out.println("Local Agenda before add");
+
+        for(DateTime time : Client.localAgenda){
+            System.out.println(time);
+        }
+        DateTime dateTime = inviteMessage.getDateTime();
+        if(!Client.localAgenda.contains(dateTime)){
+            Client.localAgenda.add(dateTime);
+        }
+        System.out.println("Local Agenda after add");
+
+        for(DateTime time : Client.localAgenda){
+            System.out.println(time);
+        }
+
+    }
+
+    private void addMappingFromMeetingNumberToMeetingData() {
+
+        System.out.println("adding mapping from meeting number to meeting data");
+        MeetingData meetingData = new MeetingData();
+        meetingData.setDateTime(inviteMessage.getDateTime());
+        meetingData.setMeetingNumber(inviteMessage.getMeetingNumber());
+        meetingData.setTopic(inviteMessage.getTopic());
+        meetingData.setRequester(inviteMessage.getRequester());
+        Client.meetingNumberToMeetingData.put(inviteMessage.getMeetingNumber(),meetingData);
 
     }
 

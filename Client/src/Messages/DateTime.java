@@ -45,5 +45,11 @@ public class DateTime implements Serializable{
         this.time = time;
     }
 
+
+    @Override
+    public String toString() {
+        return "Day: " + getDay() + "month: " + getMonth() + "year: " + getYear() + "Time: " + getTime();
+    }
+
 }
 

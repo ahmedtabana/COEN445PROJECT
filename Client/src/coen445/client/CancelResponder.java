@@ -16,7 +16,35 @@ public class CancelResponder extends BaseResponder {
         cancelMessage = (CancelMessage) message;
         cancelMessage.displayMessage();
 
-        System.out.println("Freeing up time slot in local agenda");
+        removeTimeSlotFromLocalAgenda();
+        removeMappingFromMeetingNumberToMeetingData();
 
+    }
+
+    private void removeMappingFromMeetingNumberToMeetingData() {
+        System.out.println("removing mapping for meeting#:" + cancelMessage.getMeetingNumber());
+        Client.meetingNumberToMeetingData.remove(cancelMessage.getMeetingNumber());
+    }
+
+    private void removeTimeSlotFromLocalAgenda() {
+        System.out.println("Freeing up time slot in local agenda");
+        System.out.println("Removing time slot from local agenda");
+        int meetingNumber = cancelMessage.getMeetingNumber();
+        MeetingData meetingData = Client.meetingNumberToMeetingData.get(meetingNumber);
+
+        DateTime dateTime = meetingData.getDateTime();
+        System.out.println("localAgenda before remove");
+
+        for(DateTime time : Client.localAgenda){
+            System.out.println(time);
+        }
+        if(Client.localAgenda.contains(dateTime)){
+            Client.localAgenda.remove(dateTime);
+        }
+        System.out.println("localAgenda after remove");
+
+        for(DateTime time : Client.localAgenda){
+            System.out.println(time);
+        }
     }
 }

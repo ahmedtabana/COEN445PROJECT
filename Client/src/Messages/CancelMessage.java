@@ -8,6 +8,7 @@ public class CancelMessage extends UDPMessage {
     private static final long serialVersionUID = 7526472295622776147L;
 
 
+
     private int meetingNumber;
 
     public CancelMessage(int meetingNumber){
@@ -16,6 +17,12 @@ public class CancelMessage extends UDPMessage {
         setType("Cancel");
 
     }
+
+
+    public int getMeetingNumber() {
+        return meetingNumber;
+    }
+
     @Override
     public void displayMessage() {
         super.displayMessage();
