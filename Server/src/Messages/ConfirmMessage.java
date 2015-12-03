@@ -11,7 +11,7 @@ public class ConfirmMessage extends UDPMessage {
     public ConfirmMessage(int meetingNumber){
 
         this.meetingNumber = meetingNumber;
-        setType("Accept");
+        setType("Confirm");
     }
 
 

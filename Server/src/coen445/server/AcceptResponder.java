@@ -1,8 +1,14 @@
 package coen445.server;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.util.Set;
 import Messages.*;
+
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.Timer;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Created by Ahmed on 15-12-01.
@@ -30,36 +36,16 @@ public class AcceptResponder extends BaseResponder {
             System.out.println("Received responses from all participants...");
         }
 
-
-            if(numberOfAcceptancesEqualOrHigherThanMinimumParticipants()){
+        if(numberOfAcceptancesEqualOrHigherThanMinimumParticipants()){
 
             sendConfirmMessageToParticipantsWhoAccepted();
             sendScheduledMessageToRequester();
-            }
-            else{
-
-
-                sendCancelMessageToParticipantsWhoAccepted();
-                sendNotScheduledMessageToRequester();
-
-
-            }
-
-
-
-
-    }
-
-    private void sendNotScheduledMessageToRequester() {
-
-        System.out.println("Sending Not-Scheduled Message To Requester");
-
-    }
-
-    private void sendCancelMessageToParticipantsWhoAccepted() {
-
-        System.out.println("Sending Cancel Message To Participants Who Accepted The Request");
-
+            //todo book the room for this time
+        }
+        else{
+            sendCancelMessageToParticipantsWhoAccepted();
+            sendNotScheduledMessageToRequester();
+        }
     }
 
     private void waitForResponses() {
@@ -109,19 +95,6 @@ public class AcceptResponder extends BaseResponder {
 
     }
 
-    private void sendScheduledMessageToRequester() {
-
-        System.out.println("Sending Scheduled Message To Requester");
-
-    }
-
-    private void sendConfirmMessageToParticipantsWhoAccepted() {
-
-        System.out.println("Sending Confirm Message To Participants Who Accepted The Request");
-
-
-    }
-
     private boolean numberOfAcceptancesEqualOrHigherThanMinimumParticipants() {
 
 
@@ -135,6 +108,90 @@ public class AcceptResponder extends BaseResponder {
             System.out.println("Number Of Acceptances Less Than Minimum Number Of Participants");
             return false;
 
+        }
+    }
+
+
+    private void sendScheduledMessageToRequester() {
+
+        //todo update RBMS room timeslots
+        System.out.println("Sending Scheduled Message To Requester");
+        UDPMessage udpMessage = new ScheduledMessage();
+        int meetingNumber = acceptMessage.getMeetingNumber();
+        //todo what happens if a requester goes offline?
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+        ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
+
+        System.out.println("requester ip:" + meetingData.getRequester());
+        System.out.println("requester port:" + participantData.getPort());
+        sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());
+
+    }
+
+
+
+    private void sendConfirmMessageToParticipantsWhoAccepted() {
+
+        System.out.println("Sending Confirm Message To Participants Who Accepted The Request");
+        UDPMessage udpMessage = new ConfirmMessage(acceptMessage.getMeetingNumber());
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(acceptMessage.getMeetingNumber());
+        CopyOnWriteArraySet<InetAddress> setOfAcceptedParticipants = meetingData.getSetOfAcceptedParticipants();
+
+        for(InetAddress address : setOfAcceptedParticipants){
+
+            ParticipantData participantData = Server.ipToData.get(address);
+
+            sendMessage(udpMessage,address,participantData.getPort());
+        }
+
+    }
+
+    private void sendNotScheduledMessageToRequester() {
+
+        System.out.println("Sending Not-Scheduled Message To Requester");
+        UDPMessage udpMessage = new NotScheduledMessage();
+        int meetingNumber = acceptMessage.getMeetingNumber();
+        //todo what happens if a requester goes offline?
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+        ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
+
+        sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());
+
+    }
+
+    private void sendCancelMessageToParticipantsWhoAccepted() {
+
+        System.out.println("Sending Cancel Message To Participants Who Accepted The Request");
+        UDPMessage udpMessage = new CancelMessage(acceptMessage.getMeetingNumber());
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(acceptMessage.getMeetingNumber());
+        CopyOnWriteArraySet<InetAddress> setOfAcceptedParticipants = meetingData.getSetOfAcceptedParticipants();
+
+        for(InetAddress address : setOfAcceptedParticipants){
+
+            ParticipantData participantData = Server.ipToData.get(address);
+
+            sendMessage(udpMessage,address,participantData.getPort());
+        }
+
+
+    }
+
+    private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {
+        try {
+            sendData = Server.getBytes(udpMessage);
+        } catch (IOException e) {
+            System.out.println("error in getBytes");
+            e.printStackTrace();
+        }
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,address ,port);
+        try {
+            socket.send(sendPacket);
+        } catch (IOException e) {
+            System.out.println("error in sendPacket");
+
+            e.printStackTrace();
         }
     }
 }
