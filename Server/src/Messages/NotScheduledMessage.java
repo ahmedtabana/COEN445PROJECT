@@ -12,17 +12,25 @@ public class NotScheduledMessage extends UDPMessage{
 
     private int requestNumber;
     private DateTime dateTime;
-    private CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants;
     private int minimumNumberOfParticipants;
+    private CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants;
     private String topic;
 
 
-    public NotScheduledMessage(){
+    public NotScheduledMessage(int requestNumber, DateTime dateTime, int minimumNumberOfParticipants, CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants, String topic){
+
+        this.requestNumber = requestNumber;
+        this.dateTime = dateTime;
+        this.minimumNumberOfParticipants = minimumNumberOfParticipants;
+        this.setOfConfirmedParticipants = setOfConfirmedParticipants;
+        this.topic = topic;
         setType("NotScheduled");
     }
     @Override
     public void displayMessage() {
+
         super.displayMessage();
+
     }
 }
 

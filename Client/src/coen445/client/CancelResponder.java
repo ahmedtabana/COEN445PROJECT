@@ -10,6 +10,7 @@ public class CancelResponder extends BaseResponder {
         super.respond();
 
         System.out.println("this is the CancelResponder respond method");
+        System.out.println("updating local agenda");
 
     }
 }

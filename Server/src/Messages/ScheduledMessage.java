@@ -15,8 +15,12 @@ public class ScheduledMessage extends UDPMessage {
     private int meetingNumber;
     private CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants;
 
-    public ScheduledMessage(){
+    public ScheduledMessage(int requestNumber, int meetingNumber, CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants){
+
         setType("Scheduled");
+        this.requestNumber = requestNumber;
+        this.meetingNumber = meetingNumber;
+        this.setOfConfirmedParticipants = setOfConfirmedParticipants;
     }
     @Override
     public void displayMessage() {

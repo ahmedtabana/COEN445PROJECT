@@ -6,8 +6,6 @@ import java.net.InetAddress;
 import java.util.Set;
 import Messages.*;
 
-import javax.xml.bind.SchemaOutputResolver;
-import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -41,6 +39,7 @@ public class AcceptResponder extends BaseResponder {
             sendConfirmMessageToParticipantsWhoAccepted();
             sendScheduledMessageToRequester();
             //todo book the room for this time
+            System.out.println("updating Room reservations");
         }
         else{
             sendCancelMessageToParticipantsWhoAccepted();
@@ -116,14 +115,12 @@ public class AcceptResponder extends BaseResponder {
 
         //todo update RBMS room timeslots
         System.out.println("Sending Scheduled Message To Requester");
-        UDPMessage udpMessage = new ScheduledMessage();
         int meetingNumber = acceptMessage.getMeetingNumber();
         //todo what happens if a requester goes offline?
         MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
-        ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
+        UDPMessage udpMessage = new ScheduledMessage(meetingData.getRequestNumber(),meetingData.getMeetingNumber(),meetingData.getSetOfAcceptedParticipants());
 
-        System.out.println("requester ip:" + meetingData.getRequester());
-        System.out.println("requester port:" + participantData.getPort());
+        ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
         sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());
 
     }
@@ -150,10 +147,10 @@ public class AcceptResponder extends BaseResponder {
     private void sendNotScheduledMessageToRequester() {
 
         System.out.println("Sending Not-Scheduled Message To Requester");
-        UDPMessage udpMessage = new NotScheduledMessage();
         int meetingNumber = acceptMessage.getMeetingNumber();
         //todo what happens if a requester goes offline?
         MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+        UDPMessage udpMessage = new NotScheduledMessage(meetingData.getRequestNumber(),meetingData.getDateTime(),meetingData.getMinimumNumberOfParticipants(),meetingData.getSetOfAcceptedParticipants(),meetingData.getTopic());
         ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
 
         sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());

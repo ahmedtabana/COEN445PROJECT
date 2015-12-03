@@ -10,7 +10,7 @@ public class NotScheduledResponder extends BaseResponder {
         super.respond();
 
         System.out.println("this is the NotScheduledResponder respond method");
-
+        System.out.println("updating local agenda");
 
     }
 }

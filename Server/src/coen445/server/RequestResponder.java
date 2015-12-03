@@ -80,6 +80,9 @@ public class RequestResponder extends BaseResponder {
 
         System.out.println("Mapping meeting number to meeting data");
         MeetingData meetingData = new MeetingData();
+        meetingData.setRequestNumber(requestMessage.getRequestNumber());
+        meetingData.setTopic(requestMessage.getTopic());
+        meetingData.setDateTime(requestMessage.getDateTime());
         meetingData.setRequester(inviteMessage.getRequester());
         meetingData.setMinimumNumberOfParticipants(requestMessage.getMinimumNumberOfParticipants());
         meetingData.setMeetingNumber(inviteMessage.getMeetingNumber());
