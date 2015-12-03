@@ -78,16 +78,6 @@ public class Client {
             registerUpdateResponder.respond();
 
 
-
-//            UDPMessage message = null;
-//            message = getMessage();
-//            sendData = getBytes(message);
-//            sendPacket.setData(sendData);
-
-//            Listener listener = new Listener(socket,sendPacket,IPAddress,receiveData);
-//            Thread t1 = new Thread(listener);
-//            t1.start();
-
             while(true) {
 
 
@@ -222,14 +212,27 @@ public class Client {
     }
 
     //todo must add error handling here
-    private int getServerPort(BufferedReader inFromUser) throws IOException {
+    private int getServerPort(BufferedReader inFromUser) {
         System.out.println("Please Configure Client");
         System.out.println("Enter the server port number that the client will connect to:");
 
 
-        int serverPort = Integer.parseInt( inFromUser.readLine() ) ;
+        int serverPort = 0;
+        while (serverPort == 0) {
+
+
+            try {
+                serverPort = Integer.parseInt(inFromUser.readLine());
+            } catch (IOException e) {
+                System.out.println("incorrect number");
+            } catch (NumberFormatException e){
+                System.out.println("Please enter a number");
+            }
+
+        }
         System.out.println("You have entered Server port: " + serverPort);
         return serverPort;
+
     }
 
 
