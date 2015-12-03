@@ -48,10 +48,6 @@ public class Client {
             socket = new DatagramSocket();
             availableParticipantsList = new CopyOnWriteArraySet<InetAddress>();
 
-//            availableParticipantsList.add(InetAddress.getByName("183.188.0.2"));
-//            availableParticipantsList.add(InetAddress.getByName("123.184.0.2"));
-
-
             for(InetAddress address : availableParticipantsList){
                 System.out.println("available participant list at client startup");
                 System.out.println(address);
@@ -83,17 +79,31 @@ public class Client {
 
 
 
-            UDPMessage message = null;
-            message = getMessage();
-            sendData = getBytes(message);
-            sendPacket.setData(sendData);
+//            UDPMessage message = null;
+//            message = getMessage();
+//            sendData = getBytes(message);
+//            sendPacket.setData(sendData);
+
+//            Listener listener = new Listener(socket,sendPacket,IPAddress,receiveData);
+//            Thread t1 = new Thread(listener);
+//            t1.start();
 
             while(true) {
 
+
+
+
+                UDPMessage newMessage = null;
+                newMessage = getMessage();
+                sendData = getBytes(newMessage);
+                sendPacket.setData(sendData);
                 socket.send(sendPacket);
+
+
+
                 socket.receive(receivePacket);
 
-                
+
                 UDPMessage fromServerMessage = getUdpMessage(receiveData);
 
 
@@ -108,10 +118,7 @@ public class Client {
                 Thread t = new Thread(myResponseThread);
                 t.start();
                 
-                UDPMessage newMessage = null;
-                newMessage = getMessage();
-                sendData = getBytes(newMessage);
-                sendPacket.setData(sendData);
+
 
             }
 
