@@ -13,8 +13,8 @@ public class NotScheduledMessage extends UDPMessage{
 
     private int requestNumber;
     private DateTime dateTime;
-    private CopyOnWriteArraySet<InetAddress> setOfParticipants;
     private int minimumNumberOfParticipants;
+    private CopyOnWriteArraySet<InetAddress> setOfConfirmedParticipants;
     private String topic;
 
 
@@ -23,6 +23,20 @@ public class NotScheduledMessage extends UDPMessage{
     }
     @Override
     public void displayMessage() {
+
         super.displayMessage();
+        System.out.println("Message type: " + getType());
+        System.out.println("Request Number: " + requestNumber);
+        System.out.println("Day: " + dateTime.getDay());
+        System.out.println("Month: " + dateTime.getMonth());
+        System.out.println("Year: " + dateTime.getYear());
+        System.out.println("Time: " + dateTime.getTime());
+        System.out.println("Minimum: " + minimumNumberOfParticipants);
+        System.out.println("List of Confirmed Participants");
+        for(InetAddress address : setOfConfirmedParticipants){
+            System.out.println(address);
+        }
+        System.out.println("Topic: " + topic);
+
     }
 }

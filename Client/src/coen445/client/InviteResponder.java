@@ -27,7 +27,7 @@ public class InviteResponder extends BaseResponder {
 
         } else {
 
-            updateLocalAgenda();
+            addTimeSlotToLocalAgenda();
             System.out.println("Sending Accept Message");
             UDPMessage acceptMessage = new AcceptMessage(inviteMessage.getMeetingNumber());
             sendMessage(acceptMessage);
@@ -48,7 +48,7 @@ public class InviteResponder extends BaseResponder {
         }
     }
 
-    private void updateLocalAgenda() {
+    private void addTimeSlotToLocalAgenda() {
         System.out.println("Updating local Agenda");
         Client.localAgenda.add(inviteMessage.getDateTime());
 

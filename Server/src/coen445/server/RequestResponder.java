@@ -48,7 +48,7 @@ public class RequestResponder extends BaseResponder {
 
 
             MappingMeetingNumberToMeetingData((InviteMessage) inviteMessage);
-
+            addTimeSlotToReservation(((InviteMessage) inviteMessage).getMeetingNumber());
             //send invite message to only the participants in this message
             for(InetAddress i : ((RequestMessage) message).getSetOfParticipants()){
 
@@ -75,6 +75,28 @@ public class RequestResponder extends BaseResponder {
         }
     }
 
+    private void addTimeSlotToReservation(int meetingNumber) {
+
+        System.out.println("adding time slot from RBMS Room reservations");
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+
+        DateTime dateTime = meetingData.getDateTime();
+        System.out.println("room reservation before add");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+        if(!Server.roomReservationList.contains(dateTime)){
+            Server.roomReservationList.add(dateTime);
+        }
+        System.out.println("room reservation after add");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+    }
+
     private void MappingMeetingNumberToMeetingData(InviteMessage inviteMessage) {
 
 
@@ -87,18 +109,18 @@ public class RequestResponder extends BaseResponder {
         meetingData.setMinimumNumberOfParticipants(requestMessage.getMinimumNumberOfParticipants());
         meetingData.setMeetingNumber(inviteMessage.getMeetingNumber());
         meetingData.setSetOfRequestedParticipants(requestMessage.getSetOfParticipants());
-        meetingData.displayMeetingData();
+//        meetingData.displayMeetingData();
 
         Server.meetingNumberToMeetingData.put(inviteMessage.getMeetingNumber(),meetingData);
 
 
-        System.out.println("displaying map contents");
-        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
-
-        for( int i : mySet1){
-            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
-            myData.displayMeetingData();
-        }
+//        System.out.println("displaying map contents");
+//        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
+//
+//        for( int i : mySet1){
+//            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
+//            myData.displayMeetingData();
+//        }
 
     }
 

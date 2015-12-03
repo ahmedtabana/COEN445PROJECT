@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.util.Set;
 import Messages.*;
 
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -25,10 +26,7 @@ public class AcceptResponder extends BaseResponder {
         // if not all participants have replied with either reject or accept, wait a specific time
         // current wait period is set to 5 sec
         if(!allParticipantsReplied()){
-            System.out.println("Some participants have not replied yet, waiting...");
             waitForResponses();
-            System.out.println("Wait period has expired");
-
         }
         else{
             System.out.println("Received responses from all participants...");
@@ -38,16 +36,42 @@ public class AcceptResponder extends BaseResponder {
 
             sendConfirmMessageToParticipantsWhoAccepted();
             sendScheduledMessageToRequester();
-            //todo book the room for this time
-            System.out.println("updating Room reservations");
+
         }
         else{
+
+            removeTimeSlotFromReservation();
+
             sendCancelMessageToParticipantsWhoAccepted();
             sendNotScheduledMessageToRequester();
         }
     }
+// todo
+    private void removeTimeSlotFromReservation() {
+
+        System.out.println("Removing time slot from RBMS Room reservations");
+        int meetingNumber = acceptMessage.getMeetingNumber();
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+
+        DateTime dateTime = meetingData.getDateTime();
+        System.out.println("room reservation before remove");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+        if(Server.roomReservationList.contains(dateTime)){
+            Server.roomReservationList.remove(dateTime);
+        }
+        System.out.println("room reservation after remove");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+    }
 
     private void waitForResponses() {
+
+        System.out.println("Some participants have not replied yet, waiting...");
 
         try {
             Thread.sleep(5000);
@@ -55,6 +79,7 @@ public class AcceptResponder extends BaseResponder {
             System.out.println("error in Thread sleep");
             e.printStackTrace();
         }
+        System.out.println("Wait period has expired");
     }
 
     private boolean allParticipantsReplied() {
@@ -113,7 +138,6 @@ public class AcceptResponder extends BaseResponder {
 
     private void sendScheduledMessageToRequester() {
 
-        //todo update RBMS room timeslots
         System.out.println("Sending Scheduled Message To Requester");
         int meetingNumber = acceptMessage.getMeetingNumber();
         //todo what happens if a requester goes offline?

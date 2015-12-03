@@ -19,6 +19,8 @@ public class CancelMessage extends UDPMessage {
     @Override
     public void displayMessage() {
         super.displayMessage();
+        System.out.println("Message type: " + getType());
+        System.out.println("Meeting Number: " + meetingNumber);
 
     }
 }
