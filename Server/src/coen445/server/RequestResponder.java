@@ -37,18 +37,8 @@ public class RequestResponder extends BaseResponder {
         if (RoomIsUnavailable()) {
 
             UDPMessage unAvailableMessage = new UnavailableMessage(message.getRequestNumber());
+            sendMessage(unAvailableMessage,IPAddress,port);
 
-            try {
-                sendData = Server.getBytes(unAvailableMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-            try {
-                socket.send(sendPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         } else {
 
             UDPMessage inviteMessage;
@@ -65,22 +55,7 @@ public class RequestResponder extends BaseResponder {
 
                 ParticipantData data = Server.ipToData.get(i);
                 
-
-                try {
-                    sendData = Server.getBytes(inviteMessage);
-                } catch (IOException e) {
-                    System.out.println("error in RequestResponder getBytes");
-                    e.printStackTrace();
-                }
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, data.getIPAddress(), data.getPort());
-                try {
-                    socket.send(sendPacket);
-                } catch (IOException e) {
-                    System.out.println("error in RequestResponder sendPacket");
-
-                    e.printStackTrace();
-                }
-
+                sendMessage(inviteMessage,data.getIPAddress(),data.getPort());
             }
 
             //todo here start a timer for and wait for responses
