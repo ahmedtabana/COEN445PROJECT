@@ -1,6 +1,8 @@
 package coen445.client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import Messages.*;
 
@@ -19,7 +21,7 @@ public class InviteResponder extends BaseResponder {
         inviteMessage = (InviteMessage) message;
         inviteMessage.displayMessage();
 
-        if (!ClientIsAvailable()) {
+        if (!clientIsAvailable() || !clientHasAccepted()) {
 
             System.out.println("Sending Reject Message");
             UDPMessage rejectMessage = new RejectMessage(inviteMessage.getMeetingNumber());
@@ -27,12 +29,35 @@ public class InviteResponder extends BaseResponder {
 
         } else {
 
+
             addTimeSlotToLocalAgenda();
             addMappingFromMeetingNumberToMeetingData();
             System.out.println("Sending Accept Message");
             UDPMessage acceptMessage = new AcceptMessage(inviteMessage.getMeetingNumber());
             sendMessage(acceptMessage);
         }
+    }
+
+    private boolean clientHasAccepted() {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        try {
+            System.out.println("Accept / Cancel ?");
+            String result = br.readLine();
+            if(result.equals("Accept")) {
+                System.out.println("accepting");
+                return true;
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("rejecting");
+            return false;
+        }
+        System.out.println("rejecting");
+        return false;
     }
 
     private void sendMessage(UDPMessage sendMessage) {
@@ -80,7 +105,7 @@ public class InviteResponder extends BaseResponder {
 
     }
 
-    private boolean ClientIsAvailable() {
+    private boolean clientIsAvailable() {
 
         System.out.println("Checking the local MS agenda");
 
@@ -89,16 +114,15 @@ public class InviteResponder extends BaseResponder {
             boolean conflictFound = dateTime.getDay() == inviteMessage.getDay() && dateTime.getMonth() == inviteMessage.getMonth() &&
                     dateTime.getYear() == inviteMessage.getYear() && dateTime.getTime() == inviteMessage.getTime();
             if (conflictFound) {
-                System.out.println("Person is not Available");
+                System.out.println("Time slot is not available");
                 return false;
             }
         }
 
-        System.out.println("Person is Available");
+        System.out.println("Time slot is Available");
+
 
         return true;
-
     }
-
 }
 

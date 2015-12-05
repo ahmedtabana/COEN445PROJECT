@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Created by Ahmed on 15-11-24.
@@ -13,8 +14,17 @@ import java.util.Set;
 public class RequestResponder extends BaseResponder {
 
     RequestMessage requestMessage;
+    int meetingNumber;
 
     public RequestResponder() {
+    }
+
+    public int getMeetingNumber() {
+        return meetingNumber;
+    }
+
+    public void setMeetingNumber(int meetingNumber) {
+        this.meetingNumber = meetingNumber;
     }
 
 
@@ -45,6 +55,7 @@ public class RequestResponder extends BaseResponder {
             System.out.println("creating invite message");
             inviteMessage = new InviteMessage(IPAddress,((RequestMessage) message).getDateTime(),((RequestMessage) message).getTopic());
             inviteMessage.displayMessage();
+            setMeetingNumber(((InviteMessage) inviteMessage).getMeetingNumber());
 
 
             MappingMeetingNumberToMeetingData((InviteMessage) inviteMessage);
@@ -72,30 +83,52 @@ public class RequestResponder extends BaseResponder {
 
             }
 
+            //todo here start a timer for and wait for responses
+            // todo map request number to meeting number
+            // todo decide what to do now
+            // if not all participants have replied with either reject or accept, wait a specific time
+            // current wait period is set to 5 sec
+            if(!allParticipantsReplied()){
+                waitForResponses();
+            }
+            else{
+                System.out.println("Received responses from all participants...");
+            }
+
+            if(numberOfAcceptancesEqualOrHigherThanMinimumParticipants()){
+
+                sendConfirmMessageToParticipantsWhoAccepted();
+                sendScheduledMessageToRequester();
+
+            }
+            else{
+
+                removeTimeSlotFromReservation();
+                sendCancelMessageToParticipantsWhoAccepted();
+                sendNotScheduledMessageToRequester();
+            }
         }
     }
 
-    private void addTimeSlotToReservation(int meetingNumber) {
 
-        System.out.println("adding time slot from RBMS Room reservations");
+    private boolean RoomIsUnavailable() {
 
-        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+        for (DateTime dateTime : Server.roomReservationList) {
 
-        DateTime dateTime = meetingData.getDateTime();
-        System.out.println("room reservation before add");
-
-        for(DateTime time : Server.roomReservationList){
-            System.out.println(time);
+            boolean conflictFound = dateTime.getDay() == requestMessage.getDay() && dateTime.getMonth() == requestMessage.getMonth() &&
+                    dateTime.getYear() == requestMessage.getYear() && dateTime.getTime() == requestMessage.getTime();
+            if (conflictFound) {
+                System.out.println("conflict found");
+                return true;
+            }
         }
-        if(!Server.roomReservationList.contains(dateTime)){
-            Server.roomReservationList.add(dateTime);
-        }
-        System.out.println("room reservation after add");
 
-        for(DateTime time : Server.roomReservationList){
-            System.out.println(time);
-        }
+        System.out.println("no conflict found");
+
+        return false;
+
     }
+
 
     private void MappingMeetingNumberToMeetingData(InviteMessage inviteMessage) {
 
@@ -124,22 +157,169 @@ public class RequestResponder extends BaseResponder {
 
     }
 
+    private void addTimeSlotToReservation(int meetingNumber) {
 
-    private boolean RoomIsUnavailable() {
+        System.out.println("adding time slot from RBMS Room reservations");
 
-        for (DateTime dateTime : Server.roomReservationList) {
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
 
-            boolean conflictFound = dateTime.getDay() == requestMessage.getDay() && dateTime.getMonth() == requestMessage.getMonth() &&
-                    dateTime.getYear() == requestMessage.getYear() && dateTime.getTime() == requestMessage.getTime();
-            if (conflictFound) {
-                System.out.println("conflict found");
-                return true;
-            }
+        DateTime dateTime = meetingData.getDateTime();
+        System.out.println("room reservation before add");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+        if(!Server.roomReservationList.contains(dateTime)){
+            Server.roomReservationList.add(dateTime);
+        }
+        System.out.println("room reservation after add");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+    }
+
+    private boolean allParticipantsReplied() {
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(getMeetingNumber());
+
+        return (meetingData.getNumberOfAcceptedParticipants() + meetingData.getNumberOfRejectedParticipants()) == meetingData.getNumberOfRequestedParticipants();
+    }
+
+    private void waitForResponses() {
+
+        System.out.println("Some participants have not replied yet, waiting...");
+
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            System.out.println("error in Thread sleep");
+            e.printStackTrace();
+        }
+        System.out.println("Wait period has expired");
+    }
+
+
+    private boolean numberOfAcceptancesEqualOrHigherThanMinimumParticipants() {
+
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(getMeetingNumber());
+
+        if( meetingData.getSetOfAcceptedParticipants().size() >= meetingData.getMinimumNumberOfParticipants()){
+            System.out.println("Number Of Acceptances Equal Or Higher Than Minimum Number Of Participants");
+            return true;
+        }
+        else{
+            System.out.println("Number Of Acceptances Less Than Minimum Number Of Participants");
+            return false;
+
+        }
+    }
+
+
+    private void sendConfirmMessageToParticipantsWhoAccepted() {
+
+        System.out.println("Sending Confirm Message To Participants Who Accepted The Request");
+        UDPMessage udpMessage = new ConfirmMessage(getMeetingNumber());
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(getMeetingNumber());
+        CopyOnWriteArraySet<InetAddress> setOfAcceptedParticipants = meetingData.getSetOfAcceptedParticipants();
+
+        for(InetAddress address : setOfAcceptedParticipants){
+
+            ParticipantData participantData = Server.ipToData.get(address);
+
+            sendMessage(udpMessage,address,participantData.getPort());
         }
 
-        System.out.println("no conflict found");
+    }
 
-        return false;
+
+
+    private void sendScheduledMessageToRequester() {
+
+        System.out.println("Sending Scheduled Message To Requester");
+        int meetingNumber = getMeetingNumber();
+        //todo what happens if a requester goes offline?
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+        UDPMessage udpMessage = new ScheduledMessage(meetingData.getRequestNumber(),meetingData.getMeetingNumber(),meetingData.getSetOfAcceptedParticipants());
+
+        ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
+        sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());
 
     }
+
+
+    private void removeTimeSlotFromReservation() {
+
+        System.out.println("Removing time slot from RBMS Room reservations");
+        int meetingNumber = getMeetingNumber();
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+
+        DateTime dateTime = meetingData.getDateTime();
+        System.out.println("room reservation before remove");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+        if(Server.roomReservationList.contains(dateTime)){
+            Server.roomReservationList.remove(dateTime);
+        }
+        System.out.println("room reservation after remove");
+
+        for(DateTime time : Server.roomReservationList){
+            System.out.println(time);
+        }
+    }
+
+    private void sendCancelMessageToParticipantsWhoAccepted() {
+
+        System.out.println("Sending Cancel Message To Participants Who Accepted The Request");
+        UDPMessage udpMessage = new CancelMessage(getMeetingNumber());
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(getMeetingNumber());
+        CopyOnWriteArraySet<InetAddress> setOfAcceptedParticipants = meetingData.getSetOfAcceptedParticipants();
+
+        for(InetAddress address : setOfAcceptedParticipants){
+
+            ParticipantData participantData = Server.ipToData.get(address);
+
+            sendMessage(udpMessage,address,participantData.getPort());
+        }
+
+
+    }
+
+    private void sendNotScheduledMessageToRequester() {
+
+        System.out.println("Sending Not-Scheduled Message To Requester");
+        int meetingNumber = getMeetingNumber();
+        //todo what happens if a requester goes offline?
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
+        UDPMessage udpMessage = new NotScheduledMessage(meetingData.getRequestNumber(),meetingData.getDateTime(),meetingData.getMinimumNumberOfParticipants(),meetingData.getSetOfAcceptedParticipants(),meetingData.getTopic());
+        ParticipantData participantData = Server.ipToData.get(meetingData.getRequester());
+
+        sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());
+
+    }
+
+    private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {
+        try {
+            sendData = Server.getBytes(udpMessage);
+        } catch (IOException e) {
+            System.out.println("error in getBytes");
+            e.printStackTrace();
+        }
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,address ,port);
+        try {
+            socket.send(sendPacket);
+        } catch (IOException e) {
+            System.out.println("error in sendPacket");
+
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
