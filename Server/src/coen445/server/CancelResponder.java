@@ -38,21 +38,15 @@ public class CancelResponder extends BaseResponder {
 
     }
 
+//    private boolean meetingIsConfirmed() {
+//
+//        return false;
+//    }
+
     private void sendUnauthorizedMessageToRequester() {
         System.out.println("sending Unauthorized message to requester");
         UDPMessage unAuthorizedMessage = new UnauthorizedMessage(message.getRequestNumber());
-
-        try {
-            sendData = Server.getBytes(unAuthorizedMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-        try {
-            socket.send(sendPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessage(unAuthorizedMessage,IPAddress,port);
 
     }
 
@@ -67,21 +61,8 @@ public class CancelResponder extends BaseResponder {
             ParticipantData data = Server.ipToData.get(address);
 
             UDPMessage udpMessage = new CancelMessage(meetingNumber);
+            sendMessage(udpMessage,data.getIPAddress(),data.getPort());
 
-            try {
-                sendData = Server.getBytes(udpMessage);
-            } catch (IOException e) {
-                System.out.println("error in CancelMessage getBytes");
-                e.printStackTrace();
-            }
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, data.getIPAddress(), data.getPort());
-            try {
-                socket.send(sendPacket);
-            } catch (IOException e) {
-                System.out.println("error in CancelMessage sendPacket");
-
-                e.printStackTrace();
-            }
         }
 
     }
@@ -118,6 +99,23 @@ public class CancelResponder extends BaseResponder {
     private void removeMappingFromMeetingNumberToMeetingData() {
         System.out.println("removing mapping for meeting#:" + cancelMessage.getMeetingNumber());
         Server.meetingNumberToMeetingData.remove(cancelMessage.getMeetingNumber());
+    }
+
+    private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {
+        try {
+            sendData = Server.getBytes(udpMessage);
+        } catch (IOException e) {
+            System.out.println("error in getBytes");
+            e.printStackTrace();
+        }
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,address ,port);
+        try {
+            socket.send(sendPacket);
+        } catch (IOException e) {
+            System.out.println("error in sendPacket");
+
+            e.printStackTrace();
+        }
     }
 
 }
