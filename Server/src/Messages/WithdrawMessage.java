@@ -1,20 +1,16 @@
 package Messages;
 
-import coen445.client.Client;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 
 /**
- * Created by Ahmed on 15-12-03.
+ * Created by Ahmed on 15-12-05.
  */
-public class WithdrawMessage extends UDPMessage {
+public class WithdrawMessage extends  UDPMessage {
 
     private static final long serialVersionUID = 7526472295622776147L;
-
-
     private int meetingNumber;
     private InetAddress inetAddress;
 
@@ -23,7 +19,6 @@ public class WithdrawMessage extends UDPMessage {
         setType("Withdraw");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        while(!meetingNumberReady(br));
     }
 
     public WithdrawMessage(int meetingNumber, InetAddress address){
@@ -40,26 +35,7 @@ public class WithdrawMessage extends UDPMessage {
     }
 
 
-    private boolean meetingNumberReady(BufferedReader br) {
 
-        try {
-            System.out.println("Please enter the meeting number to withdraw from");
-            setMeetingNumber(Integer.parseInt(br.readLine()));
-//            if(!Client.meetingNumberToMeetingData.containsKey(meetingNumber)){
-//                System.out.println("This meeting is not currently scheduled");
-//                return false;
-//            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Not an Integer");
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public void displayMessage() {

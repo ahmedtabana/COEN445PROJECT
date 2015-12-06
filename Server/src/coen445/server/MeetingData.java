@@ -169,7 +169,11 @@ public class MeetingData {
         }
     }
 
+    public void removeParticipantFromAcceptedParticipants(InetAddress address){
 
-
+        if(setOfAcceptedParticipants.remove(address)){
+            System.out.println("removed from set of accepted participants");
+        }
+    }
 }
 

@@ -1,7 +1,7 @@
 package Messages;
 
 
-import coen445.server.RequestParticipantListMessage;
+//import coen445.server.RequestParticipantListMessage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -84,29 +84,29 @@ public class RequestMessage extends UDPMessage {
 
 
 
-    private void requestParticipantList() {
-
-        byte[] sendData;
-        byte[] recieveData;
-
-        UDPMessage requestParticipantListMessage = null;
-
-        requestParticipantListMessage = (UDPMessage) new  RequestParticipantListMessage();
-
-
-        try {
-            sendData = getBytes(requestParticipantListMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        DatagramPacket sendPacket;
-//        sendPacket.setData(sendData);
-//        socket.connect(IPAddress, serverPort);
-//        socket.send(sendPacket);
-//        socket.receive();
+//    private void requestParticipantList() {
 //
-    }
+//        byte[] sendData;
+//        byte[] recieveData;
+//
+//        UDPMessage requestParticipantListMessage = null;
+//
+//        requestParticipantListMessage = (UDPMessage) new  RequestParticipantListMessage();
+//
+//
+//        try {
+//            sendData = getBytes(requestParticipantListMessage);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        DatagramPacket sendPacket;
+////        sendPacket.setData(sendData);
+////        socket.connect(IPAddress, serverPort);
+////        socket.send(sendPacket);
+////        socket.receive();
+////
+//    }
 
     private byte[] getBytes(UDPMessage message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -41,6 +41,10 @@ public class AcceptResponder extends BaseResponder {
         //add the acceptor IP
         meetingData.addParticipantToSetOfAccepted(IPAddress);
 
+        // if the acceptor was previously on the reject list, remove him from that list
+        if(meetingData.getSetOfRejectedParticipants().contains(IPAddress)){
+            meetingData.getSetOfRejectedParticipants().remove(IPAddress);
+        }
 
         //update map with new meetingData
         Server.meetingNumberToMeetingData.put(meetingNumber,meetingData);

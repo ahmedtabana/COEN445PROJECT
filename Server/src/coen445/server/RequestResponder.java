@@ -58,9 +58,7 @@ public class RequestResponder extends BaseResponder {
                 sendMessage(inviteMessage,data.getIPAddress(),data.getPort());
             }
 
-            //todo here start a timer for and wait for responses
-            // todo map request number to meeting number
-            // todo decide what to do now
+
             // if not all participants have replied with either reject or accept, wait a specific time
             // current wait period is set to 5 sec
             if(!allParticipantsReplied()){
@@ -81,6 +79,8 @@ public class RequestResponder extends BaseResponder {
                 removeTimeSlotFromReservation();
                 sendCancelMessageToParticipantsWhoAccepted();
                 sendNotScheduledMessageToRequester();
+                //remove mapping?
+                //removeMappingFromMeetingNumberToMeetingData();
             }
         }
     }
@@ -276,6 +276,11 @@ public class RequestResponder extends BaseResponder {
 
         sendMessage(udpMessage,meetingData.getRequester(),participantData.getPort());
 
+    }
+
+    private void removeMappingFromMeetingNumberToMeetingData() {
+        System.out.println("removing mapping for meeting#:" + getMeetingNumber());
+        Server.meetingNumberToMeetingData.remove(getMeetingNumber());
     }
 
     private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {

@@ -26,6 +26,15 @@ public class InviteMessage extends UDPMessage {
         setMeetingNumber(counter);
     }
 
+    public InviteMessage(int meetingNumber, DateTime dateTime, String topic, InetAddress requester){
+
+        this.meetingNumber = meetingNumber;
+        this.dateTime = dateTime;
+        this.topic = topic;
+        this.requester = requester;
+
+    }
+
     public InetAddress getRequester() {
         return requester;
     }
