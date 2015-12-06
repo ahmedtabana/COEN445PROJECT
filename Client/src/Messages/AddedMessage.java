@@ -1,30 +1,27 @@
 package Messages;
 
+import java.net.InetAddress;
+
 /**
- * Created by Ahmed on 15-12-02.
+ * Created by Ahmed on 15-12-05.
  */
-public class CancelMessage extends UDPMessage {
+public class AddedMessage extends UDPMessage {
 
     private static final long serialVersionUID = 7526472295622776147L;
 
     private int meetingNumber;
+    private InetAddress addedParticipantAddress;
 
-    public CancelMessage(int meetingNumber){
+    public AddedMessage(int meetingNumber, InetAddress addedParticipantAddress){
 
         this.meetingNumber = meetingNumber;
-        setType("Cancel");
-
-    }
-
-    public int getMeetingNumber() {
-        return meetingNumber;
+        this.addedParticipantAddress = addedParticipantAddress;
     }
     @Override
     public void displayMessage() {
         super.displayMessage();
         System.out.println("Message type: " + getType());
         System.out.println("Meeting Number: " + meetingNumber);
+        System.out.println("IP address" + addedParticipantAddress);
     }
-
-
 }

@@ -175,5 +175,12 @@ public class MeetingData {
             System.out.println("removed from set of accepted participants");
         }
     }
+
+    public void removeParticipantFromRejectedParticipants(InetAddress address){
+
+        if(setOfRejectedParticipants.remove(address)){
+            System.out.println("removed from set of rejected participants");
+        }
+    }
 }
 

@@ -45,7 +45,7 @@ public class CancelResponder extends BaseResponder {
 
     private void sendUnauthorizedMessageToRequester() {
         System.out.println("sending Unauthorized message to requester");
-        UDPMessage unAuthorizedMessage = new UnauthorizedMessage(message.getRequestNumber());
+        UDPMessage unAuthorizedMessage = new UnauthorizedMessage(cancelMessage.getMeetingNumber());
         sendMessage(unAuthorizedMessage,IPAddress,port);
 
     }
