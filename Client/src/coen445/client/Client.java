@@ -193,7 +193,8 @@ public class Client {
 
             ObjectInputStream is = new ObjectInputStream(in);
             message = (UDPMessage) is.readObject();
-
+            System.out.println("");
+            System.out.println("");
             System.out.println("Client received message: "+ message);
             message.displayMessage();
 
@@ -210,6 +211,7 @@ public class Client {
         ObjectOutputStream os = new ObjectOutputStream(outputStream);
         os.writeObject(message);
         System.out.println("From Client, creating message object: " + message.toString());
+        System.out.println("");
         return outputStream.toByteArray();
     }
 

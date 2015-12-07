@@ -166,7 +166,7 @@ public class RequestResponder extends BaseResponder {
         System.out.println("Some participants have not replied yet, waiting...");
 
         try {
-            Thread.sleep(30000);
+            Thread.sleep(300000);
         } catch (InterruptedException e) {
             System.out.println("error in Thread sleep");
             e.printStackTrace();
