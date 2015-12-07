@@ -70,7 +70,9 @@ public class CancelResponder extends BaseResponder {
     private boolean requesterOfMeetingIsCanceling() {
         int meetingNumber = cancelMessage.getMeetingNumber();
         MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
-        return IPAddress == meetingData.getRequester();
+//        return IPAddress == meetingData.getRequester();
+        // had a problem with previous return, returns false.
+        return IPAddress.equals(meetingData.getRequester());
 
     }
 

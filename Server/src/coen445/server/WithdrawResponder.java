@@ -81,7 +81,8 @@ public class WithdrawResponder extends BaseResponder {
     private boolean requesterOfMeetingIsWithdrawing() {
         int meetingNumber = withdrawMessage.getMeetingNumber();
         MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
-        return IPAddress == meetingData.getRequester();
+//        return IPAddress == meetingData.getRequester();
+        return  IPAddress.equals(meetingData.getRequester());
 
     }
 
