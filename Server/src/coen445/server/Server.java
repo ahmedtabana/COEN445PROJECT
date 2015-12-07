@@ -46,13 +46,13 @@ public class Server{
 
     private void setupIpToData() {
 
-        try {
-            ipToData.put(InetAddress.getByName("123.184.0.2"),new ParticipantData(InetAddress.getByName("123.184.0.2"),200));
-            ipToData.put(InetAddress.getByName("111.124.0.1"),new ParticipantData(InetAddress.getByName("111.124.0.1"),199));
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ipToData.put(InetAddress.getByName("123.184.0.2"),new ParticipantData(InetAddress.getByName("123.184.0.2"),200));
+//            ipToData.put(InetAddress.getByName("111.124.0.1"),new ParticipantData(InetAddress.getByName("111.124.0.1"),199));
+//
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//        }
         displayRegisteredUsers();
     }
 
