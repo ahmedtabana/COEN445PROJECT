@@ -75,9 +75,9 @@ public class Server{
     private int getServerPortFromUser() {
         String userInput;
         int serverPort = 0;
-        while (serverPort == 0 || serverPort < 1024) {
+        while (serverPort == 0 || serverPort < 1025 ||  serverPort > 65534) {
 
-            System.out.println("Please enter a number greater than 1024");
+            System.out.println("Please enter a number greater than 1024 and less than 65535");
 
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -89,6 +89,8 @@ public class Server{
 
 
                 e.printStackTrace();
+            } catch (IllegalArgumentException e){
+                System.out.println("Not allowed");
             }
 
 
