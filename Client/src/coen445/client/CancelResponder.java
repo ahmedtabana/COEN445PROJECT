@@ -27,13 +27,13 @@ public class CancelResponder extends BaseResponder {
     }
 
     private void removeTimeSlotFromLocalAgenda() {
-        System.out.println("Freeing up time slot in local agenda");
         System.out.println("Removing time slot from local agenda");
         int meetingNumber = cancelMessage.getMeetingNumber();
         MeetingData meetingData = Client.meetingNumberToMeetingData.get(meetingNumber);
 
         DateTime dateTime = meetingData.getDateTime();
         System.out.println("localAgenda before remove");
+        System.out.println("");
 
         for(DateTime time : Client.localAgenda){
             System.out.println(time);
@@ -42,9 +42,11 @@ public class CancelResponder extends BaseResponder {
             Client.localAgenda.remove(dateTime);
         }
         System.out.println("localAgenda after remove");
+        System.out.println("");
 
         for(DateTime time : Client.localAgenda){
             System.out.println(time);
         }
+        System.out.println("");
     }
 }

@@ -41,7 +41,7 @@ public class InviteResponder extends BaseResponder {
     private boolean clientHasAccepted() {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+        System.out.println("");
         try {
             System.out.println("Accept / Cancel ?");
             String result = br.readLine();
@@ -76,6 +76,7 @@ public class InviteResponder extends BaseResponder {
 
     private void addTimeSlotToLocalAgenda() {
         System.out.println("Adding time slot to local Agenda");
+        System.out.println("");
         System.out.println("Local Agenda before add");
 
         for(DateTime time : Client.localAgenda){
@@ -85,6 +86,7 @@ public class InviteResponder extends BaseResponder {
         if(!Client.localAgenda.contains(dateTime)){
             Client.localAgenda.add(dateTime);
         }
+        System.out.println("");
         System.out.println("Local Agenda after add");
 
         for(DateTime time : Client.localAgenda){
