@@ -17,6 +17,8 @@ public class Client {
 
     public static final int BUFFER_SIZE = 1024;
 
+    //made this static
+//    DatagramSocket socket;
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
     public static CopyOnWriteArraySet<InetAddress> availableParticipantsList;
@@ -80,9 +82,13 @@ public class Client {
             registerUpdateResponder.respond();
 
 
+            ListenThread myListenThread = new ListenThread(socket,receivePacket,IPAddress,receiveData);
+
+            Thread listen = new Thread(myListenThread);
+            listen.start();
+
+
             while(true) {
-
-
 
 
                 UDPMessage newMessage = null;
@@ -93,23 +99,23 @@ public class Client {
 
 
 
-                socket.receive(receivePacket);
+//                socket.receive(receivePacket);
 
 
-                UDPMessage fromServerMessage = getUdpMessage(receiveData);
-
-
-                InetAddress address = receivePacket.getAddress();
-                System.out.println(" RECEIVED Address: " + address);
-                int port = receivePacket.getPort();
-                System.out.println(" RECEIVED Port: " + port);
-
-
-                ResponseThread myResponseThread = new ResponseThread(fromServerMessage,IPAddress,port, socket);
-
-                Thread t = new Thread(myResponseThread);
-                t.start();
-                
+//                UDPMessage fromServerMessage = getUdpMessage(receiveData);
+//
+//
+//                InetAddress address = receivePacket.getAddress();
+//                System.out.println(" RECEIVED Address: " + address);
+//                int port = receivePacket.getPort();
+//                System.out.println(" RECEIVED Port: " + port);
+//
+//
+//                ResponseThread myResponseThread = new ResponseThread(fromServerMessage,IPAddress,port, socket);
+//
+//                Thread t = new Thread(myResponseThread);
+//                t.start();
+//
 
 
             }
