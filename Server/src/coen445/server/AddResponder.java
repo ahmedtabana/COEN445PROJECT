@@ -31,6 +31,7 @@ public class AddResponder extends BaseResponder {
                 sendConfirmMessageToParticipant();
                 sendAddedMessageToMeetingOrganizer();
                 // update here to save to file
+
             }
             // if the requester is not in the rejected list,
             // then he is not authorized to request to be added to this meeting
@@ -53,7 +54,8 @@ public class AddResponder extends BaseResponder {
 
         // check in the server if we have a meeting number that is equal to the one we received from
         // the cancel message. If yes, return true, else return false;
-        return Server.meetingNumberToMeetingData.contains(addMessage.getMeetingNumber());
+//        return Server.meetingNumberToMeetingData.contains(addMessage.getMeetingNumber());
+        return  Server.meetingNumberToMeetingData.containsKey(addMessage.getMeetingNumber());
     }
 
     private boolean participantIsInRejectedList() {
@@ -64,7 +66,9 @@ public class AddResponder extends BaseResponder {
         //check the meeting data
         //if the requester is in the rejected list for this meeting, return true
         // otherwise return false
+//        return meetingData.getSetOfRejectedParticipants().contains(IPAddress);
         return meetingData.getSetOfRejectedParticipants().contains(IPAddress);
+
     }
 
     private void removeParticipantFromRejectedList() {
@@ -105,7 +109,7 @@ public class AddResponder extends BaseResponder {
 
     private void sendUnauthorizedMessageToParticipant() {
         System.out.println("sending Unauthorized message to requester");
-        UDPMessage unAuthorizedMessage = new UnauthorizedMessage(message.getRequestNumber());
+        UDPMessage unAuthorizedMessage = new UnauthorizedMessage(addMessage.getMeetingNumber());
         sendMessage(unAuthorizedMessage,IPAddress,port);
 
     }

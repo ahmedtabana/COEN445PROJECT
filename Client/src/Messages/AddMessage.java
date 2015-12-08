@@ -20,7 +20,7 @@ public class AddMessage extends UDPMessage {
 
     public AddMessage(){
 
-        setType("Withdraw");
+        setType("Add");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         while(!meetingNumberReady(br));

@@ -14,6 +14,8 @@ public class AddedMessage extends UDPMessage {
 
     public AddedMessage(int meetingNumber, InetAddress addedParticipantAddress){
 
+        setType("Added");
+
         this.meetingNumber = meetingNumber;
         this.addedParticipantAddress = addedParticipantAddress;
     }
