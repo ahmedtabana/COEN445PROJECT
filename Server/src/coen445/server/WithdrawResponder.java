@@ -42,7 +42,6 @@ public class WithdrawResponder extends BaseResponder {
                     if(numberOfAcceptancesIsBelowMinimum()){
 
                     sendCancelMessageToAllConfirmedParticipants();
-//                    sendCancelMessageToRequester();
                     removeTimeSlotFromReservation();
                     removeMappingFromMeetingNumberToMeetingData();
                     }
@@ -59,7 +58,6 @@ public class WithdrawResponder extends BaseResponder {
                     //todo what to do here?
                     //do nothing?
                      addWithdrawerToRejectedList();
-                     sendCancelMessageToRequester();
                  }
 
 
