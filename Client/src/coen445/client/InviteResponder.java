@@ -43,7 +43,7 @@ public class InviteResponder extends BaseResponder {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("");
         try {
-            System.out.println("Accept / Cancel ?");
+            System.out.println("Accept / Reject ?");
             String result = br.readLine();
             if(result.equals("Accept")) {
                 System.out.println("accepting");
