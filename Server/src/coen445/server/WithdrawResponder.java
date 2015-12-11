@@ -47,7 +47,7 @@ public class WithdrawResponder extends BaseResponder {
                     }
                     else{
 
-                    sendConfirmMessageToNewlyAcceptedParticipants();
+                    sendConfirmMessageToAcceptedParticipants();
                     sendScheduledMessageToRequesterWithUpdatedListOfParticipants();
                     }
 
@@ -234,9 +234,21 @@ public class WithdrawResponder extends BaseResponder {
 
 
 
-    private void sendConfirmMessageToNewlyAcceptedParticipants() {
-        //todo
-        System.out.println("todo: send confirm message to newly accepted participants");
+    private void sendConfirmMessageToAcceptedParticipants() {
+
+        System.out.println("Sending confirm message to newly accepted participants");
+        UDPMessage udpMessage = new ConfirmMessage(withdrawMessage.getMeetingNumber());
+
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(withdrawMessage.getMeetingNumber());
+        CopyOnWriteArraySet<InetAddress> setOfAcceptedParticipants = meetingData.getSetOfAcceptedParticipants();
+
+        for(InetAddress address : setOfAcceptedParticipants){
+
+            ParticipantData participantData = Server.ipToData.get(address);
+
+            sendMessage(udpMessage,address,participantData.getPort());
+        }
+
 
     }
 
