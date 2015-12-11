@@ -47,6 +47,6 @@ public class DateTime implements Serializable{
 
     @Override
     public String toString() {
-        return "Day: " + getDay() + "month: " + getMonth() + "year: " + getYear() + "Time: " + getTime();
+        return "Day: " + getDay() + " month: " + getMonth() + " year: " + getYear() + " Time: " + getTime();
     }
 }
