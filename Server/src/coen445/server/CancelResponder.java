@@ -23,31 +23,36 @@ public class CancelResponder extends BaseResponder {
 
         int meetingNumber = cancelMessage.getMeetingNumber();
 
+        if(meetingExists()){
 
-        if(requesterOfMeetingIsCanceling()){
-            System.out.println("This user is the requester and has permission for cancellation");
-            sendCancelMessageToAllConfirmedParticipants();
-            removeTimeSlotFromReservation();
-            removeMappingFromMeetingNumberToMeetingData();
-        }
-        else{
+            if(requesterOfMeetingIsCanceling()){
+                System.out.println("This user is the requester and has permission for cancellation");
+                sendCancelMessageToAllConfirmedParticipants();
+                removeTimeSlotFromReservation();
+                removeMappingFromMeetingNumberToMeetingData();
+            }
+            else{
 
+                sendUnauthorizedMessageToRequester();
+            }
+        }else{
             sendUnauthorizedMessageToRequester();
         }
 
 
     }
 
-//    private boolean meetingIsConfirmed() {
-//
-//        return false;
-//    }
 
     private void sendUnauthorizedMessageToRequester() {
         System.out.println("sending Unauthorized message to requester");
         UDPMessage unAuthorizedMessage = new UnauthorizedMessage(cancelMessage.getMeetingNumber());
         sendMessage(unAuthorizedMessage,IPAddress,port);
 
+    }
+
+    private boolean meetingExists() {
+
+        return Server.meetingNumberToMeetingData.containsKey(cancelMessage.getMeetingNumber());
     }
 
     private void sendCancelMessageToAllConfirmedParticipants() {

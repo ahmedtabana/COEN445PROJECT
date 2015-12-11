@@ -30,10 +30,6 @@ public class CancelMessage extends UDPMessage {
         try {
             System.out.println("Please enter the meeting number to cancel");
             setMeetingNumber(Integer.parseInt(br.readLine()));
-            if(!Client.meetingNumberToMeetingData.containsKey(meetingNumber)){
-                System.out.println("This meeting is not currently scheduled");
-                return false;
-            }
 
         } catch (IOException e) {
             e.printStackTrace();

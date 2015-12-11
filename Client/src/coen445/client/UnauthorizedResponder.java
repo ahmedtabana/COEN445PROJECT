@@ -15,6 +15,6 @@ public class UnauthorizedResponder extends  BaseResponder {
         super.respond();
 
         unauthorizedMessage = (UnauthorizedMessage) message;
-        unauthorizedMessage.displayMessage();
+
     }
 }

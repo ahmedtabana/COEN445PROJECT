@@ -50,18 +50,8 @@ public class WithdrawMessage extends UDPMessage {
 
         try {
 
-            System.out.println("displaying meeting data before withdraw");
-            Set<Integer> meetingNumberSet = Client.meetingNumberToMeetingData.keySet();
-
-            for( int meetingNumber : meetingNumberSet){
-                MeetingData meetingData = Client.meetingNumberToMeetingData.get(meetingNumber);
-                meetingData.displayMeetingData();
-            }
-
-
             System.out.println("Please enter the meeting number to withdraw from");
-
-                setMeetingNumber(Integer.parseInt(br.readLine()));
+            setMeetingNumber(Integer.parseInt(br.readLine()));
 
 
         } catch (IOException e) {
