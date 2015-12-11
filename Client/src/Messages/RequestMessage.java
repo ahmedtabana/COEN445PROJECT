@@ -154,13 +154,49 @@ public class RequestMessage extends UDPMessage {
         try {
 
             System.out.println("Please enter the day");
-            dateTime.setDay(Integer.parseInt(br.readLine()));
+            int day = Integer.parseInt(br.readLine());
+            if( day > 31 || day < 1){
+                System.out.println("Please enter a correct day");
+                return  false;
+            }
+            dateTime.setDay(day);
+
+
             System.out.println("Please enter the month");
-            dateTime.setMonth(Integer.parseInt(br.readLine()));
+            int month = Integer.parseInt(br.readLine());
+            if( month > 12 || month < 1){
+                System.out.println("Please enter a correct month");
+                return  false;
+            }
+            dateTime.setMonth(month);
+
+
             System.out.println("Please enter the year");
-            dateTime.setYear(Integer.parseInt(br.readLine()));
+            int year = Integer.parseInt(br.readLine());
+            if( year < 2015){
+                System.out.println("Please enter a year in the future");
+                return  false;
+            }
+            dateTime.setYear(year);
+
+
             System.out.println("Please enter the time");
-            dateTime.setTime(Integer.parseInt(br.readLine()));
+            int time = Integer.parseInt(br.readLine());
+            if( time > 24 || time < 0){
+                System.out.println("Please enter a correct time");
+                return  false;
+            }
+            dateTime.setTime(time);
+
+            if( month == 2 && day > 28){
+                System.out.println("illegal input");
+                return false;
+            }
+            if( year == 2015 && month == 12 && (day < 14 || time < 3)){
+                System.out.println("illegal input");
+                return false;
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();
