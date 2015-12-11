@@ -18,7 +18,7 @@ public class MessageFactory {
             try {
                 System.out.println("Please enter message type");
 
-                type = "Messages." + br.readLine();
+                type = "Messages." + br.readLine() + "Message";
                 newMessage = (UDPMessage) Class.forName(type).newInstance();
                 return newMessage;
 
