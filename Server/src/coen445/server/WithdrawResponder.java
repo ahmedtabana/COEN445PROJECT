@@ -30,6 +30,7 @@ public class WithdrawResponder extends BaseResponder {
             else{
                  System.out.println("This user is not the requester of the meeting and can withdraw");
                  informRequesterOfWithdrawal();
+                 sendCancelMessageToWithdrawer();
                  removeWithdrawerFromAcceptedList();
 
                  if(numberOfAcceptancesIsBelowMinimum()){
@@ -58,7 +59,7 @@ public class WithdrawResponder extends BaseResponder {
                     //todo what to do here?
                     //do nothing?
                      addWithdrawerToRejectedList();
-
+                     sendCancelMessageToRequester();
                  }
 
 
@@ -74,6 +75,13 @@ public class WithdrawResponder extends BaseResponder {
 
         }
 
+
+    }
+
+    private void sendCancelMessageToWithdrawer() {
+        System.out.println("Sending cancel message to withdrawer");
+        UDPMessage cancelMessage = new CancelMessage(withdrawMessage.getMeetingNumber());
+        sendMessage(cancelMessage,IPAddress,port);
 
     }
 
