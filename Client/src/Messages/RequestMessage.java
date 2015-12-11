@@ -192,9 +192,20 @@ public class RequestMessage extends UDPMessage {
                 System.out.println("illegal input");
                 return false;
             }
-            if( year == 2015 && month == 12 && (day < 14 || time < 3)){
-                System.out.println("illegal input");
-                return false;
+            if( year == 2015){
+                if(month < 12){
+                    System.out.println("illegal input");
+                    return false;
+
+
+                }else if(day < 14){
+                        System.out.println("illegal input");
+                        return false;
+                    }
+                 else if(time < 15){
+                    System.out.println("illegal input");
+                    return false;
+                }
             }
 
 
