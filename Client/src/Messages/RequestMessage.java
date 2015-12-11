@@ -96,7 +96,8 @@ public class RequestMessage extends UDPMessage {
 
         boolean isReady = false;
         while(!isReady) {
-
+            System.out.println("");
+            System.out.println("");
             System.out.println("Please select an IP address from the list for Participant #" + counter);
             displayListOfAvailableParticipants();
 
@@ -268,32 +269,6 @@ public class RequestMessage extends UDPMessage {
     public void setMinimumNumberOfParticipants(int minimumNumberOfParticipants) {
         this.minimumNumberOfParticipants = minimumNumberOfParticipants;
     }
-
-
-
-//    private void requestParticipantList() {
-//
-//        byte[] sendData;
-//        byte[] recieveData;
-//
-//        coen445.server.UDPMessage requestParticipantListMessage = null;
-//
-//        requestParticipantListMessage = (coen445.server.UDPMessage) new RequestParticipantListMessage();
-//
-//
-//        try {
-//            sendData = getBytes(requestParticipantListMessage);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        DatagramPacket sendPacket;
-////        sendPacket.setData(sendData);
-////        socket.connect(IPAddress, serverPort);
-////        socket.send(sendPacket);
-////        socket.receive();
-////
-//    }
 
     private byte[] getBytes(UDPMessage message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
