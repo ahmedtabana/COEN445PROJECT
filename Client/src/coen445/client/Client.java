@@ -35,13 +35,6 @@ public class Client {
 
         localAgenda = new CopyOnWriteArrayList<DateTime>();
 
-        DateTime firstSlot = new DateTime();
-        firstSlot.setDay(2);
-        firstSlot.setMonth(10);
-        firstSlot.setYear(2016);
-        firstSlot.setTime(10);
-
-        localAgenda.add(firstSlot);
     }
 
     public void connect(){
@@ -96,27 +89,6 @@ public class Client {
                 sendData = getBytes(newMessage);
                 sendPacket.setData(sendData);
                 socket.send(sendPacket);
-
-
-
-//                socket.receive(receivePacket);
-
-
-//                UDPMessage fromServerMessage = getUdpMessage(receiveData);
-//
-//
-//                InetAddress address = receivePacket.getAddress();
-//                System.out.println(" RECEIVED Address: " + address);
-//                int port = receivePacket.getPort();
-//                System.out.println(" RECEIVED Port: " + port);
-//
-//
-//                ResponseThread myResponseThread = new ResponseThread(fromServerMessage,IPAddress,port, socket);
-//
-//                Thread t = new Thread(myResponseThread);
-//                t.start();
-//
-
 
             }
 

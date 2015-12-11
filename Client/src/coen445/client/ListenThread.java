@@ -38,9 +38,7 @@ public class ListenThread implements Runnable {
 
 
                 InetAddress address = receivePacket.getAddress();
-                System.out.println(" RECEIVED Address: " + address);
                 int port = receivePacket.getPort();
-                System.out.println(" RECEIVED Port: " + port);
 
 
                 ResponseThread myResponseThread = new ResponseThread(fromServerMessage,IPAddress,port, socket);
