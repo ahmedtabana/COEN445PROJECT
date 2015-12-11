@@ -123,7 +123,7 @@ public class MeetingData {
         }
 
         System.out.println("Topic:" + getTopic());
-        System.out.println("DateTime" + getDateTime());
+        System.out.println("Date-Time:" + getDateTime());
         System.out.println("");
 
 
