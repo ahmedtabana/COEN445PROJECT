@@ -17,8 +17,6 @@ public class Client {
 
     public static final int BUFFER_SIZE = 1024;
 
-    //made this static
-//    DatagramSocket socket;
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
     public static CopyOnWriteArraySet<InetAddress> availableParticipantsList;

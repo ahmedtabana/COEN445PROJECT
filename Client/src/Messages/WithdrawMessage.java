@@ -1,11 +1,13 @@
 package Messages;
 
 import coen445.client.Client;
+import coen445.client.MeetingData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.util.Set;
 
 /**
  * Created by Ahmed on 15-12-03.
@@ -16,8 +18,6 @@ public class WithdrawMessage extends UDPMessage {
 
 
     private int meetingNumber;
-
-
 
     private InetAddress inetAddress;
 
@@ -30,6 +30,7 @@ public class WithdrawMessage extends UDPMessage {
     }
 
     public WithdrawMessage(int meetingNumber, InetAddress address){
+        setType("Withdraw");
         this.meetingNumber = meetingNumber;
         this.inetAddress = address;
     }
@@ -48,11 +49,20 @@ public class WithdrawMessage extends UDPMessage {
     private boolean meetingNumberReady(BufferedReader br) {
 
         try {
-            System.out.println("Please enter the meeting number to withdraw from");
-            if(Client.meetingNumberToMeetingData.containsKey(meetingNumber)){
-                System.out.println("This meeting is  currently scheduled and you are able to withdraw");
-                setMeetingNumber(Integer.parseInt(br.readLine()));
+
+            System.out.println("displaying meeting data before withdraw");
+            Set<Integer> meetingNumberSet = Client.meetingNumberToMeetingData.keySet();
+
+            for( int meetingNumber : meetingNumberSet){
+                MeetingData meetingData = Client.meetingNumberToMeetingData.get(meetingNumber);
+                meetingData.displayMeetingData();
             }
+
+
+            System.out.println("Please enter the meeting number to withdraw from");
+
+                setMeetingNumber(Integer.parseInt(br.readLine()));
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,7 +78,8 @@ public class WithdrawMessage extends UDPMessage {
     @Override
     public void displayMessage() {
         super.displayMessage();
-        System.out.println("|| " + getType() + " | " + getMeetingNumber() + " | " + getInetAddress()+ "||");
+        System.out.println("Message type: " + getType());
+        System.out.println("Meeting #" + getMeetingNumber());
 
 
     }

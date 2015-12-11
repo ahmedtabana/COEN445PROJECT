@@ -68,6 +68,10 @@ public class WithdrawResponder extends BaseResponder {
         }
         else{
             System.out.println("meeting does not exist");
+            sendUnauthorizedMessageToRequester();
+
+
+
 
         }
 

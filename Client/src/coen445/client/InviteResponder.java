@@ -105,6 +105,13 @@ public class InviteResponder extends BaseResponder {
         meetingData.setRequester(inviteMessage.getRequester());
         Client.meetingNumberToMeetingData.put(inviteMessage.getMeetingNumber(),meetingData);
 
+        displayMapping();
+
+    }
+
+    private void displayMapping() {
+
+
     }
 
     private boolean clientIsAvailable() {
