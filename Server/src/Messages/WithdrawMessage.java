@@ -22,6 +22,7 @@ public class WithdrawMessage extends  UDPMessage {
     }
 
     public WithdrawMessage(int meetingNumber, InetAddress address){
+        setType("Withdraw");
         this.meetingNumber = meetingNumber;
         this.inetAddress = address;
     }

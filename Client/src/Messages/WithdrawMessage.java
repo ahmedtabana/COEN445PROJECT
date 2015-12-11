@@ -44,11 +44,10 @@ public class WithdrawMessage extends UDPMessage {
 
         try {
             System.out.println("Please enter the meeting number to withdraw from");
-            setMeetingNumber(Integer.parseInt(br.readLine()));
-//            if(!Client.meetingNumberToMeetingData.containsKey(meetingNumber)){
-//                System.out.println("This meeting is not currently scheduled");
-//                return false;
-//            }
+            if(Client.meetingNumberToMeetingData.containsKey(meetingNumber)){
+                System.out.println("This meeting is  currently scheduled and you are able to withdraw");
+                setMeetingNumber(Integer.parseInt(br.readLine()));
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

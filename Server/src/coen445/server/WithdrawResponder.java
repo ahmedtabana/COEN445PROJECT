@@ -81,7 +81,6 @@ public class WithdrawResponder extends BaseResponder {
     private boolean requesterOfMeetingIsWithdrawing() {
         int meetingNumber = withdrawMessage.getMeetingNumber();
         MeetingData meetingData = Server.meetingNumberToMeetingData.get(meetingNumber);
-//        return IPAddress == meetingData.getRequester();
         return  IPAddress.equals(meetingData.getRequester());
 
     }
@@ -156,7 +155,7 @@ public class WithdrawResponder extends BaseResponder {
         System.out.println("Some participants have not replied yet, waiting...");
 
         try {
-            Thread.sleep(30000);
+            Thread.sleep(90000);
         } catch (InterruptedException e) {
             System.out.println("error in Thread sleep");
             e.printStackTrace();
