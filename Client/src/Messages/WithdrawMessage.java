@@ -69,7 +69,8 @@ public class WithdrawMessage extends UDPMessage {
     public void displayMessage() {
         super.displayMessage();
         System.out.println("Message type: " + getType());
-        System.out.println("Meeting #" + getMeetingNumber());
+        System.out.println("Meeting #:" + getMeetingNumber());
+        System.out.println("IPAddress:" + getInetAddress());
 
 
     }
