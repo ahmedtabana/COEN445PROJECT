@@ -47,13 +47,6 @@ public class Server{
 
     private void setupIpToData() {
 
-//        try {
-//            ipToData.put(InetAddress.getByName("123.184.0.2"),new ParticipantData(InetAddress.getByName("123.184.0.2"),200));
-//            ipToData.put(InetAddress.getByName("111.124.0.1"),new ParticipantData(InetAddress.getByName("111.124.0.1"),199));
-//
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        }
         displayRegisteredUsers();
     }
 
@@ -104,7 +97,7 @@ public class Server{
 
         try {
             serverIPAddress = InetAddress.getLocalHost();
-//            System.out.println("InetAddress = " + serverIPAddress);
+
         } catch (UnknownHostException e) {
             System.out.println("Server IP address is not known");
             e.printStackTrace();
@@ -127,13 +120,6 @@ public class Server{
 
         roomReservationList = new CopyOnWriteArrayList<DateTime>();
 
-        DateTime firstSlot = new DateTime();
-        firstSlot.setDay(1);
-        firstSlot.setMonth(10);
-        firstSlot.setYear(2016);
-        firstSlot.setTime(10);
-
-        roomReservationList.add(firstSlot);
     }
 
     private void displayServerInfo() {
@@ -187,6 +173,7 @@ public class Server{
             message = (UDPMessage) is.readObject();
 
             System.out.println("RECEIVED Type: "+ message);
+
             System.out.println(" ");
 
         } catch (IOException e) {
