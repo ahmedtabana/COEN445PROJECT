@@ -14,6 +14,7 @@ import Messages.*;
 public class Server{
 
     public static final int BUFFER_SIZE = 1024;
+    static final int WAIT_TIME_MILLIS = 90000;
     private static DatagramSocket serverSocket;
     public static ConcurrentHashMap<InetAddress,ParticipantData> ipToData;
     public static CopyOnWriteArrayList<DateTime> roomReservationList;

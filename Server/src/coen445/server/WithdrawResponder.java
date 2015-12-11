@@ -58,6 +58,8 @@ public class WithdrawResponder extends BaseResponder {
                  else{
                     //todo what to do here?
                     //do nothing?
+                     addWithdrawerToRejectedList();
+
                  }
 
 
@@ -66,7 +68,7 @@ public class WithdrawResponder extends BaseResponder {
         }
         else{
             System.out.println("meeting does not exist");
-            //todo inform client of this?
+
         }
 
 
@@ -155,7 +157,7 @@ public class WithdrawResponder extends BaseResponder {
         System.out.println("Some participants have not replied yet, waiting...");
 
         try {
-            Thread.sleep(90000);
+            Thread.sleep(Server.WAIT_TIME_MILLIS);
         } catch (InterruptedException e) {
             System.out.println("error in Thread sleep");
             e.printStackTrace();

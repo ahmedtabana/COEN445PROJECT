@@ -16,6 +16,9 @@ public class WithdrawMessage extends UDPMessage {
 
 
     private int meetingNumber;
+
+
+
     private InetAddress inetAddress;
 
     public WithdrawMessage(){
@@ -39,7 +42,9 @@ public class WithdrawMessage extends UDPMessage {
         this.meetingNumber = meetingNumber;
     }
 
-
+    public InetAddress getInetAddress() {
+        return inetAddress;
+    }
     private boolean meetingNumberReady(BufferedReader br) {
 
         try {
@@ -63,8 +68,8 @@ public class WithdrawMessage extends UDPMessage {
     @Override
     public void displayMessage() {
         super.displayMessage();
-        System.out.println("Message type: " + getType());
-        System.out.println("Meeting Number: " + meetingNumber);
+        System.out.println("|| " + getType() + " | " + getMeetingNumber() + " | " + getInetAddress()+ "||");
+
 
     }
 }
