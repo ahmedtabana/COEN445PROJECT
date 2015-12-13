@@ -15,10 +15,10 @@ public class Write {
         //WRITE
         try{
 
-            Properties properties = new Properties();
-            properties.setProperty("Meeting-1", "Jan 22");
-            properties.setProperty("Meeting-2", "Jan 27");
-            properties.setProperty("Meeting-3", "Jan 29");
+            Properties writeclient = new Properties();
+            writeclient.setProperty("Meeting-1", "Jan 22");
+            writeclient.setProperty("Meeting-2", "Jan 27");
+            writeclient.setProperty("Meeting-3", "Jan 29");
 
             //Option 1
         /*    File file = new File("testfile2_1.properties");//Create file if it doesn't exist
@@ -32,7 +32,7 @@ public class Write {
              fileOut.close();
 */
             //Option 3
-            properties.store(new FileOutputStream("Client Schedule.properties"),"Schedules");
+            writeclient.store(new FileOutputStream("Client Schedule.properties"),"Schedules");
 
 
 

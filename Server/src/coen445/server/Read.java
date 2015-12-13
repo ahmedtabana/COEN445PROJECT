@@ -13,13 +13,13 @@ public class Read {
     public static void main(String[] args) throws IOException {
         //READ ONLY
         try{
-            Properties pro = new Properties();
+            Properties readserver = new Properties();
             FileInputStream in = new FileInputStream("Meeting Schedule.properties");
-            pro.load(in);
+            readserver.load(in);
 
             //Option 1(Several names)
             for(int i=1;i<4;i++) {
-                System.out.println(pro.getProperty("Meeting-"+i));
+                System.out.println(readserver.getProperty("Meeting-"+i));
             }
 
                 /*
