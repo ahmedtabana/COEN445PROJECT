@@ -44,7 +44,8 @@ public class AddResponder extends BaseResponder {
         else{
 
             System.out.println("Meeting is not scheduled");
-            sendCancelMessageToParticipant();
+//            sendCancelMessageToParticipant();
+              sendUnauthorizedMessageToParticipant();
         }
 
 

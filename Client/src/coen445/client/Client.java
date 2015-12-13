@@ -16,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class Client {
 
     public static final int BUFFER_SIZE = 1024;
+    File agenda;
 
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
@@ -27,7 +28,25 @@ public class Client {
 
     Client (){
         setupLocalAgenda();
+//        createAgendaFileIfItDoesNotExist();
     }
+
+//    private void createAgendaFileIfItDoesNotExist() {
+//        System.out.println("setting up storage");
+//        if(agenda.exists()){
+//            System.out.println("a file exists, loading data from file");
+//            loadLocalAgenda();
+//        }
+//        else{
+//            System.out.println("a file does not exist, creating new file for local agenda");
+//            agenda = new File("agenda.txt");
+//        }
+//    }
+//
+//    private void loadLocalAgenda() {
+//        System.out.println("loading local agenda");
+//
+//    }
 
     private void setupLocalAgenda() {
 
