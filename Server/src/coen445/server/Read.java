@@ -1,4 +1,4 @@
-package coen445.client;
+package coen445.server;
 import java.util.*;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,12 +14,12 @@ public class Read {
         //READ ONLY
         try{
             Properties pro = new Properties();
-            FileInputStream in = new FileInputStream("Meeting Schedule");
+            FileInputStream in = new FileInputStream("Meeting Schedule.properties");
             pro.load(in);
 
             //Option 1(Several names)
             for(int i=1;i<4;i++) {
-                System.out.println(pro.getProperty("Meeting#"+i));
+                System.out.println(pro.getProperty("Meeting-"+i));
             }
 
                 /*

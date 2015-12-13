@@ -14,12 +14,12 @@ public class Read {
             //READ ONLY
             try{
                 Properties pro = new Properties();
-                FileInputStream in = new FileInputStream("Client Schedule");
+                FileInputStream in = new FileInputStream("Client Schedule.properties");
                 pro.load(in);
 
                 //Option 1(Several names)
                 for(int i=1;i<4;i++) {
-                    System.out.println(pro.getProperty("Meeting#"+i));
+                    System.out.println(pro.getProperty("Meeting-"+i));
                 }
 
                 /*
