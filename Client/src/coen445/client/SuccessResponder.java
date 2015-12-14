@@ -32,10 +32,8 @@ public class SuccessResponder extends BaseResponder {
             System.out.println("Local Agenda before add");
 
             for(DateTime time : Client.localAgenda){
-                System.out.println(time.getDay());
-                System.out.println(time.getMonth());
-                System.out.println(time.getYear());
-                System.out.println(time.getTime());
+                System.out.println(time.toString());
+
             }
                 Client.localAgenda.add(dateTime);
 
@@ -43,10 +41,8 @@ public class SuccessResponder extends BaseResponder {
             System.out.println("Local Agenda after add");
 
             for(DateTime time : Client.localAgenda){
-                System.out.println(time.getDay());
-                System.out.println(time.getMonth());
-                System.out.println(time.getYear());
-                System.out.println(time.getTime());
+                System.out.println(time.toString());
+
             }
 
         }

@@ -34,7 +34,7 @@ public class WithdrawResponder extends BaseResponder {
                  sendCancelMessageToWithdrawer();
                  removeWithdrawerFromAcceptedList();
                  addWithdrawerToRejectedList();
-
+                // when withdraw message is created, must remove all mappings?
                  if(numberOfAcceptancesIsBelowMinimum()){
 
                     sendInviteMessageToRejectedParticipants();
