@@ -33,11 +33,11 @@ public class WithdrawResponder extends BaseResponder {
                  informRequesterOfWithdrawal();
                  sendCancelMessageToWithdrawer();
                  removeWithdrawerFromAcceptedList();
+                 addWithdrawerToRejectedList();
 
                  if(numberOfAcceptancesIsBelowMinimum()){
 
                     sendInviteMessageToRejectedParticipants();
-                    addWithdrawerToRejectedList();
                     waitForResponses();
 
                     if(numberOfAcceptancesIsBelowMinimum()){
@@ -58,7 +58,6 @@ public class WithdrawResponder extends BaseResponder {
                  else{
                     //todo what to do here?
                     //do nothing?
-                     addWithdrawerToRejectedList();
                  }
 
 
