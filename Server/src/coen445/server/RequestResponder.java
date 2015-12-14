@@ -5,6 +5,7 @@ import Messages.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -62,6 +63,7 @@ public class RequestResponder extends BaseResponder {
             // current wait period is set to 5 sec
             if(!allParticipantsReplied()){
                 waitForResponses();
+                analyzeResponses();
             }
             else{
                 System.out.println("Received responses from all participants...");
@@ -79,10 +81,16 @@ public class RequestResponder extends BaseResponder {
                 sendCancelMessageToParticipantsWhoAccepted();
                 sendNotScheduledMessageToRequester();
                 //remove mapping?
-                //removeMappingFromMeetingNumberToMeetingData();
+                removeMappingFromMeetingNumberToMeetingData();
             }
         }
     }
+
+    private void analyzeResponses() {
+
+
+    }
+
 
 
     private boolean RoomIsUnavailable() {
@@ -117,18 +125,24 @@ public class RequestResponder extends BaseResponder {
         meetingData.setMeetingNumber(inviteMessage.getMeetingNumber());
         meetingData.setSetOfRequestedParticipants(requestMessage.getSetOfParticipants());
 //        meetingData.displayMeetingData();
+        displayMeetingNumberToMeetingDataContents("Before adding");
 
         Server.meetingNumberToMeetingData.put(inviteMessage.getMeetingNumber(),meetingData);
 
 
-//        System.out.println("displaying map contents");
-//        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
-//
-//        for( int i : mySet1){
-//            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
-//            myData.displayMeetingData();
-//        }
+        displayMeetingNumberToMeetingDataContents("After adding");
 
+    }
+
+    private void displayMeetingNumberToMeetingDataContents(String when) {
+
+        System.out.println("Displaying meetingNumberToMeetingData " + when);
+        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
+
+        for( int i : mySet1){
+            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
+            myData.displayMeetingData();
+        }
     }
 
     private void addTimeSlotToReservation(int meetingNumber) {
@@ -141,7 +155,7 @@ public class RequestResponder extends BaseResponder {
         System.out.println("room reservation before add");
 
         for(DateTime time : Server.roomReservationList){
-            System.out.println(time);
+            System.out.println(time.toString());
         }
         if(!Server.roomReservationList.contains(dateTime)){
             Server.roomReservationList.add(dateTime);
@@ -149,7 +163,7 @@ public class RequestResponder extends BaseResponder {
         System.out.println("room reservation after add");
 
         for(DateTime time : Server.roomReservationList){
-            System.out.println(time);
+            System.out.println(time.toString());
         }
     }
 
@@ -279,7 +293,9 @@ public class RequestResponder extends BaseResponder {
 
     private void removeMappingFromMeetingNumberToMeetingData() {
         System.out.println("removing mapping for meeting#:" + getMeetingNumber());
+        displayMeetingNumberToMeetingDataContents("Before remove");
         Server.meetingNumberToMeetingData.remove(getMeetingNumber());
+        displayMeetingNumberToMeetingDataContents("After remove");
     }
 
     private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {
