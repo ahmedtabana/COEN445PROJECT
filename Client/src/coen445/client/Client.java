@@ -34,7 +34,7 @@ public class Client {
     private void createAgendaFileIfItDoesNotExist() {
         System.out.println("setting up storage");
         if(agenda.exists()){
-            System.out.println("a file exists, loading data from file");
+//            System.out.println("a file exists, loading data from file");
             loadLocalAgenda();
         }
         else{
@@ -42,7 +42,7 @@ public class Client {
     }
 
     private void loadLocalAgenda() {
-        System.out.println("loading local agenda");
+//        System.out.println("loading local agenda");
 
     }
 

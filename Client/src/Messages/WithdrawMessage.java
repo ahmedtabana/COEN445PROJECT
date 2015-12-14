@@ -1,13 +1,9 @@
 package Messages;
 
-import coen445.client.Client;
-import coen445.client.MeetingData;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.util.Set;
 
 /**
  * Created by Ahmed on 15-12-03.

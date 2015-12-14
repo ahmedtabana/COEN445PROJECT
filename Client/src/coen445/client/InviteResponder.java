@@ -19,7 +19,6 @@ public class InviteResponder extends BaseResponder {
 
         System.out.println("Invite responder respond method");
         inviteMessage = (InviteMessage) message;
-        inviteMessage.displayMessage();
 
         if (!clientIsAvailable() || !clientHasAccepted()) {
 

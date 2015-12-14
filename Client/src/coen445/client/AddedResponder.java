@@ -13,7 +13,6 @@ public class AddedResponder extends BaseResponder {
         super.respond();
 
         addedMessage = (AddedMessage) message;
-        addedMessage.displayMessage();
 
     }
 }

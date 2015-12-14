@@ -11,7 +11,6 @@ public class UnavailableResponder extends BaseResponder {
     public void respond() {
         super.respond();
         unavailableMessage = (UnavailableMessage) message;
-        unavailableMessage.displayMessage();
     }
 }
 

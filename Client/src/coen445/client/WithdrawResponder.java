@@ -12,6 +12,5 @@ public class WithdrawResponder extends BaseResponder {
     public void respond() {
         super.respond();
         withdrawMessage = (WithdrawMessage) message;
-        withdrawMessage.displayMessage();
     }
 }

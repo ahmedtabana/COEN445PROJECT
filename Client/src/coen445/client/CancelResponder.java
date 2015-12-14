@@ -14,7 +14,6 @@ public class CancelResponder extends BaseResponder {
 
         System.out.println("this is the CancelResponder respond method");
         cancelMessage = (CancelMessage) message;
-        cancelMessage.displayMessage();
 
         removeTimeSlotFromLocalAgenda();
         removeMappingFromMeetingNumberToMeetingData();

@@ -1,7 +1,5 @@
 package Messages;
 
-import coen445.client.MeetingData;
-
 /**
  * Created by Ahmed on 15-12-13.
  */

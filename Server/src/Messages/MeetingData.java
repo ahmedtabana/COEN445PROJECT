@@ -1,13 +1,15 @@
-package coen445.server;
+package Messages;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.concurrent.CopyOnWriteArraySet;
 import Messages.*;
 /**
  * Created by Ahmed on 15-12-01.
  */
-public class MeetingData {
+public class MeetingData implements Serializable {
 
+    private static final long serialVersionUID = 7526472295622776147L;
 
     private int meetingNumber;
     private int minimumNumberOfParticipants;

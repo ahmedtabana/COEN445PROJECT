@@ -16,6 +16,5 @@ public class ConfirmResponder extends BaseResponder {
         System.out.println("this is the ConfirmResponder respond method");
 
         confirmMessage = (ConfirmMessage) message;
-        confirmMessage.displayMessage();
     }
 }

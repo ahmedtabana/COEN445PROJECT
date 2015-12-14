@@ -14,7 +14,6 @@ public class ScheduledResponder extends BaseResponder {
         System.out.println("this is the ScheduledResponder respond method");
 
         scheduledMessage = (ScheduledMessage) message;
-        scheduledMessage.displayMessage();
 
     }
 }

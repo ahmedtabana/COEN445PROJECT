@@ -1,9 +1,5 @@
 package Messages;
 
-import coen445.server.MeetingData;
-
-import java.net.InetAddress;
-
 /**
  * Created by Ahmed on 15-12-13.
  */
