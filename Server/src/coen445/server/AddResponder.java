@@ -28,6 +28,7 @@ public class AddResponder extends BaseResponder {
 
                 removeParticipantFromRejectedList();
                 addParticipantToAcceptedList();
+                sendAddSuccessMessageToParticipant();
                 sendConfirmMessageToParticipant();
                 sendAddedMessageToMeetingOrganizer();
                 // update here to save to file
@@ -49,6 +50,14 @@ public class AddResponder extends BaseResponder {
         }
 
 
+    }
+
+    private void sendAddSuccessMessageToParticipant() {
+        System.out.println("sending Success message to participant");
+        MeetingData meetingData = Server.meetingNumberToMeetingData.get(addMessage.getMeetingNumber());
+
+        UDPMessage successMessage = new SuccessMessage(meetingData.getDateTime());
+        sendMessage(successMessage,IPAddress,port);
     }
 
     private boolean meetingIsScheduled() {
@@ -85,7 +94,7 @@ public class AddResponder extends BaseResponder {
 
     private void sendConfirmMessageToParticipant() {
 
-        System.out.println("sending Confirm message to requester");
+        System.out.println("sending Confirm message to participant");
         UDPMessage confirmMessage = new ConfirmMessage(addMessage.getMeetingNumber());
         sendMessage(confirmMessage,IPAddress,port);
     }
