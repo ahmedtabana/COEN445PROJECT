@@ -8,12 +8,14 @@ import Messages.*;
 public class SuccessResponder extends BaseResponder {
 
     SuccessMessage successMessage;
-
+    MeetingData meetingData;
     @Override
     public void respond() {
         super.respond();
         successMessage = (SuccessMessage) message;
+        meetingData = successMessage.getMeetingData();
         addTimeSlotToLocalAgenda();
+        addMappingFromMeetingNumberToMeetingData();
     }
 
 
@@ -23,11 +25,9 @@ public class SuccessResponder extends BaseResponder {
             System.out.println("Adding time slot to local Agenda");
             System.out.println("");
             System.out.println("displaying received time slot");
-            DateTime dateTime = successMessage.getDateTime();
+            DateTime dateTime = meetingData.getDateTime();
+            System.out.println(dateTime.toString());
 
-            System.out.println(dateTime);
-        System.out.println("");
-        System.out.println(dateTime.getDay());
 
             System.out.println("Local Agenda before add");
 
@@ -50,5 +50,16 @@ public class SuccessResponder extends BaseResponder {
             }
 
         }
+
+    private void addMappingFromMeetingNumberToMeetingData() {
+
+        System.out.println("adding mapping from meeting number to meeting data");
+
+        Client.meetingNumberToMeetingData.put(meetingData.getMeetingNumber(),meetingData);
+
+
+
+    }
+
 
 }

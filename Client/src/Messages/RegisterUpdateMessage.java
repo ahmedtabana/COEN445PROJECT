@@ -24,7 +24,7 @@ public class RegisterUpdateMessage extends UDPMessage {
     public void displayMessage() {
         super.displayMessage();
         System.out.println(getType());
-        System.out.println("Displaying updated participant list that will be sent");
+        System.out.println("Displaying updated participant list that will be used");
         for( InetAddress address : updatedListOfParticipants){
             System.out.println(address);
         }

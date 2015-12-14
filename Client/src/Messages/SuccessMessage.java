@@ -1,5 +1,7 @@
 package Messages;
 
+import coen445.client.MeetingData;
+
 /**
  * Created by Ahmed on 15-12-13.
  */
@@ -7,30 +9,29 @@ public class SuccessMessage extends UDPMessage {
 
     private static final long serialVersionUID = 7526472295622776147L;
 
+    MeetingData meetingData;
 
+    public SuccessMessage(MeetingData meetingData){
 
-    DateTime dateTime;
-
-    public SuccessMessage(DateTime dateTime){
-
-        this.dateTime = dateTime;
+        this.meetingData = meetingData;
         setType("Success");
 
     }
 
-    public DateTime getDateTime() {
-        return dateTime;
+    public MeetingData getMeetingData() {
+        return meetingData;
     }
 
-    public void setDateTime(DateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setMeetingData(MeetingData meetingData) {
+        this.meetingData = meetingData;
     }
+
 
     @Override
     public void displayMessage() {
         super.displayMessage();
         System.out.println("Message type: " + getType());
-        System.out.println(dateTime);
+        meetingData.displayMeetingData();
 
     }
 }

@@ -94,7 +94,7 @@ public class InviteResponder extends BaseResponder {
         }
 
     }
-
+    //in added responder should receive the message and addMappingFromMeetingNumberToMeetingData
     private void addMappingFromMeetingNumberToMeetingData() {
 
         System.out.println("adding mapping from meeting number to meeting data");

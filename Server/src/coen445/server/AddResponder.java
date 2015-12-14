@@ -58,7 +58,7 @@ public class AddResponder extends BaseResponder {
         System.out.println("sending Success message to participant");
         MeetingData meetingData = Server.meetingNumberToMeetingData.get(addMessage.getMeetingNumber());
 
-        UDPMessage successMessage = new SuccessMessage(meetingData.getDateTime());
+        UDPMessage successMessage = new SuccessMessage(meetingData);
         sendMessage(successMessage,IPAddress,port);
     }
 

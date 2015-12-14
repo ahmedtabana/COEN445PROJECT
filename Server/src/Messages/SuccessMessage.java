@@ -1,5 +1,7 @@
 package Messages;
 
+import coen445.server.MeetingData;
+
 import java.net.InetAddress;
 
 /**
@@ -11,20 +13,23 @@ public class SuccessMessage extends UDPMessage {
 
 
 
-    DateTime dateTime;
+    MeetingData meetingData;
 
-    public SuccessMessage(DateTime dateTime){
+    public SuccessMessage(MeetingData meetingData){
 
-        this.dateTime = dateTime;
+        this.meetingData = meetingData;
         setType("Success");
 
     }
 
-    public DateTime getDateTime() {
-        return dateTime;
+
+    public MeetingData getMeetingData() {
+        return meetingData;
     }
 
-    public void setDateTime(DateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setMeetingData(MeetingData meetingData) {
+        this.meetingData = meetingData;
     }
+
+
 }
