@@ -2,6 +2,8 @@ package coen445.client;
 
 import Messages.*;
 
+import java.util.Set;
+
 /**
  * Created by Ahmed on 15-12-02.
  */
@@ -22,7 +24,20 @@ public class CancelResponder extends BaseResponder {
 
     private void removeMappingFromMeetingNumberToMeetingData() {
         System.out.println("removing mapping for meeting#:" + cancelMessage.getMeetingNumber());
+        displayMeetingNumberToMeetingDataContents("Before removing");
         Client.meetingNumberToMeetingData.remove(cancelMessage.getMeetingNumber());
+        displayMeetingNumberToMeetingDataContents("After removing");
+    }
+
+    private void displayMeetingNumberToMeetingDataContents(String when) {
+
+        System.out.println("Displaying meetingNumberToMeetingData " + when);
+        Set<Integer> mySet1 = Client.meetingNumberToMeetingData.keySet();
+
+        for( int i : mySet1){
+            MeetingData myData = Client.meetingNumberToMeetingData.get(i);
+            myData.displayMeetingData();
+        }
     }
 
     private void removeTimeSlotFromLocalAgenda() {

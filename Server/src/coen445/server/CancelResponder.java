@@ -5,6 +5,7 @@ import Messages.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.util.Set;
 
 /**
  * Created by Ahmed on 15-12-03.
@@ -105,7 +106,20 @@ public class CancelResponder extends BaseResponder {
 
     private void removeMappingFromMeetingNumberToMeetingData() {
         System.out.println("removing mapping for meeting#:" + cancelMessage.getMeetingNumber());
+        displayMeetingNumberToMeetingDataContents("Before removing");
         Server.meetingNumberToMeetingData.remove(cancelMessage.getMeetingNumber());
+        displayMeetingNumberToMeetingDataContents("After removing");
+    }
+
+    private void displayMeetingNumberToMeetingDataContents(String when) {
+
+        System.out.println("Displaying meetingNumberToMeetingData " + when);
+        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
+
+        for( int i : mySet1){
+            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
+            myData.displayMeetingData();
+        }
     }
 
     private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {
