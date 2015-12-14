@@ -23,7 +23,11 @@ public class SuccessResponder extends BaseResponder {
             System.out.println("Adding time slot to local Agenda");
             System.out.println("");
             System.out.println("displaying received time slot");
-            System.out.println(successMessage.getDateTime());
+            DateTime dateTime = successMessage.getDateTime();
+
+            System.out.println(dateTime);
+        System.out.println("");
+        System.out.println(dateTime.getDay());
 
             System.out.println("Local Agenda before add");
 
@@ -33,10 +37,8 @@ public class SuccessResponder extends BaseResponder {
                 System.out.println(time.getYear());
                 System.out.println(time.getTime());
             }
-            DateTime dateTime = successMessage.getDateTime();
-            if(!Client.localAgenda.contains(dateTime)){
                 Client.localAgenda.add(dateTime);
-            }
+
             System.out.println("");
             System.out.println("Local Agenda after add");
 
