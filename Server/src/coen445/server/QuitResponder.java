@@ -12,68 +12,38 @@ import java.util.Set;
  */
 public class QuitResponder extends BaseResponder {
 
-    RegisterUpdateMessage registerUpdateMessage;
+    QuitMessage quitMessage;
 
     @Override
     public void respond() {
         super.respond();
         System.out.println("this is the QuitResponder respond method");
 
-        removeIpToData(IPAddress, port);
-        displayListOfParticipants();
+        quitMessage = (QuitMessage) message;
 
-        Set<InetAddress> inetAddresses = Server.ipToData.keySet();
+        sendMessage(quitMessage,IPAddress,port);
 
-        for(InetAddress i : inetAddresses){
-
-            ParticipantData data = Server.ipToData.get(i);
-
-            UDPMessage udpMessage = new RegisterUpdateMessage();
-
-            try {
-                sendData = Server.getBytes(udpMessage);
-            } catch (IOException e) {
-                System.out.println("error in RegisterResponder getBytes");
-                e.printStackTrace();
-            }
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, data.getIPAddress(), data.getPort());
-            try {
-                socket.send(sendPacket);
-            } catch (IOException e) {
-                System.out.println("error in RegisterResponder sendPacket");
-
-                e.printStackTrace();
-            }
 
         }
 
-    }
-
-    private void removeIpToData(InetAddress ipAddress, int port) {
-        System.out.println("removing client to list of registered users");
-
-
-        Server.ipToData.remove(ipAddress);
-
-        System.out.println("Removing client from list is Successful");
-
-    }
-
-
-    private void displayListOfParticipants(){
-
-        System.out.println("Displaying the list of registered users:");
-        System.out.println("");
-        Set<InetAddress> mySet = Server.ipToData.keySet();
-
-        for(InetAddress i : mySet){
-
-            ParticipantData data = Server.ipToData.get(i);
-
-            System.out.println("IPAddress: " + data.getIPAddress());
-            System.out.println("Port: " + data.getPort());
-            System.out.println(" ");
+    private void sendMessage(UDPMessage udpMessage, InetAddress address, int port) {
+        try {
+            sendData = Server.getBytes(udpMessage);
+        } catch (IOException e) {
+            System.out.println("error in getBytes");
+            e.printStackTrace();
         }
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,address ,port);
+        try {
+            socket.send(sendPacket);
+        } catch (IOException e) {
+            System.out.println("error in sendPacket");
 
+            e.printStackTrace();
+        }
     }
 }
+
+
+
+

@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class Client {
 
     public static final int BUFFER_SIZE = 1024;
-    File agenda;
+    static File agenda = new File("agenda.txt");
 
     DatagramSocket socket;
     MessageFactory factory = new MessageFactory();
@@ -28,25 +28,49 @@ public class Client {
 
     Client (){
         setupLocalAgenda();
-//        createAgendaFileIfItDoesNotExist();
+        createAgendaFileIfItDoesNotExist();
     }
 
-//    private void createAgendaFileIfItDoesNotExist() {
-//        System.out.println("setting up storage");
-//        if(agenda.exists()){
-//            System.out.println("a file exists, loading data from file");
-//            loadLocalAgenda();
-//        }
-//        else{
-//            System.out.println("a file does not exist, creating new file for local agenda");
-//            agenda = new File("agenda.txt");
-//        }
-//    }
-//
-//    private void loadLocalAgenda() {
-//        System.out.println("loading local agenda");
-//
-//    }
+    private void createAgendaFileIfItDoesNotExist() {
+        System.out.println("setting up storage");
+        if(agenda.exists()){
+            System.out.println("a file exists, loading data from file");
+            loadLocalAgenda();
+        }
+        else{
+        }
+    }
+
+    private void loadLocalAgenda() {
+        System.out.println("loading local agenda");
+
+    }
+
+    public static void saveLocalAgendaToFile(){
+        BufferedWriter outputWriter = null;
+        try {
+            outputWriter = new BufferedWriter(new FileWriter(agenda));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+
+            for(DateTime dateTime : Client.localAgenda){
+                outputWriter.write(dateTime.toString());
+                outputWriter.newLine();
+            }
+
+            outputWriter.flush();
+            outputWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
     private void setupLocalAgenda() {
 
