@@ -5,6 +5,7 @@ import Messages.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.util.Set;
 
 /**
  * Created by Ahmed on 15-12-05.
@@ -28,6 +29,7 @@ public class AddResponder extends BaseResponder {
 
                 removeParticipantFromRejectedList();
                 addParticipantToAcceptedList();
+                displayAllMeetingData();
                 sendAddSuccessMessageToParticipant();
                 sendConfirmMessageToParticipant();
                 sendAddedMessageToMeetingOrganizer();
@@ -154,6 +156,16 @@ public class AddResponder extends BaseResponder {
             System.out.println("error in sendPacket");
 
             e.printStackTrace();
+        }
+    }
+
+    private void displayAllMeetingData() {
+        System.out.println("displaying updated meeting data");
+        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
+
+        for( int i : mySet1){
+            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
+            myData.displayMeetingData();
         }
     }
 }

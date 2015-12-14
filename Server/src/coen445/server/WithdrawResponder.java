@@ -5,6 +5,7 @@ import Messages.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -280,6 +281,16 @@ public class WithdrawResponder extends BaseResponder {
             System.out.println("error in sendPacket");
 
             e.printStackTrace();
+        }
+    }
+
+    private void displayAllMeetingData() {
+        System.out.println("displaying updated meeting data");
+        Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
+
+        for( int i : mySet1){
+            MeetingData myData = Server.meetingNumberToMeetingData.get(i);
+            myData.displayMeetingData();
         }
     }
 }

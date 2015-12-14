@@ -130,12 +130,18 @@ public class MeetingData {
     }
 
     public void addParticipantToSetOfAccepted(InetAddress ipAddress) {
-        setOfAcceptedParticipants.add(ipAddress);
+
+       if(!setOfAcceptedParticipants.contains(ipAddress)){
+           setOfAcceptedParticipants.add(ipAddress);
+       }
     }
 
 
     public void addParticipantToSetOfRejected(InetAddress ipAddress) {
-        setOfRejectedParticipants.add(ipAddress);
+        if(!setOfRejectedParticipants.contains(ipAddress)){
+            setOfRejectedParticipants.add(ipAddress);
+
+        }
     }
 
     public int getNumberOfAcceptedParticipants(){

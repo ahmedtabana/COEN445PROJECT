@@ -38,6 +38,12 @@ public class RejectResponder extends BaseResponder {
         Server.meetingNumberToMeetingData.put(meetingNumber,meetingData);
 
 
+        displayAllMeetingData();
+
+
+    }
+
+    private void displayAllMeetingData() {
         System.out.println("displaying updated meeting data");
         Set<Integer> mySet1 = Server.meetingNumberToMeetingData.keySet();
 
@@ -45,7 +51,5 @@ public class RejectResponder extends BaseResponder {
             MeetingData myData = Server.meetingNumberToMeetingData.get(i);
             myData.displayMeetingData();
         }
-
-
     }
 }
